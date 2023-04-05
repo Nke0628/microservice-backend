@@ -1,16 +1,18 @@
 syntax = "proto3";
 
-package sample;
+package evaluation;
 
-service AppService {
-    rpc FindOne(SampleDataById)returns(SamepleData){}
+service EvaluationService {
+    rpc FetchMultiTerms(FetchMultiTermsRequest)returns(FetchMultiTermsResponese){}
 }
 
-message SampleDataById{
-    int32 id = 1;
-}
+message FetchMultiTermsRequest{}
 
-message SamepleData{
+message FetchMultiTermsResponese{
     int32 id = 1;
-    string name = 2;
+    string business_term_name = 2;
+    string business_term_start_date =3;
+    string business_term_end_date =4;
+    string multi_term_start_date =5;
+    string multi_term_end_date =6;
 }
