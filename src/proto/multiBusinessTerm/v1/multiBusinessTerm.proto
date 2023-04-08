@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package evaluation;
+
+service EvaluationService {
+    rpc FetchAll(FetchAllRequest)returns(FetchAllResponse){}
+    rpc FindById(FindByIdRequest)returns(FindByIdResponse){}
+}
+
+message MultiBusinessTerm{
+    int32 id = 1;
+    string businessTermName = 2;
+    string businessTermStartDate =3;
+    string businessTermEndDate =4;
+    string multiTermStartDate =5;
+    string multiTermEndDate =6;
+}
+
+message FetchAllRequest{}
+
+message FetchAllResponse{
+    repeated MultiBusinessTerm multiBusinessTerm = 1;
+}
+
+message FindByIdRequest{
+    int32 id = 1;
+}
+
+message FindByIdResponse{
+    MultiBusinessTerm MultiBusinessTerm = 1;
+}

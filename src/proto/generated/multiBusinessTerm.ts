@@ -4,10 +4,7 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "evaluation";
 
-export interface FetchMultiTermsRequest {
-}
-
-export interface FetchMultiTermsResponese {
+export interface MultiBusinessTerm {
   id: number;
   businessTermName: string;
   businessTermStartDate: string;
@@ -16,21 +13,38 @@ export interface FetchMultiTermsResponese {
   multiTermEndDate: string;
 }
 
+export interface FetchAllRequest {
+}
+
+export interface FetchAllResponse {
+  multiBusinessTerm: MultiBusinessTerm[];
+}
+
+export interface FindByIdRequest {
+  id: number;
+}
+
+export interface FindByIdResponse {
+  MultiBusinessTerm: MultiBusinessTerm | undefined;
+}
+
 export const EVALUATION_PACKAGE_NAME = "evaluation";
 
 export interface EvaluationServiceClient {
-  fetchMultiTerms(request: FetchMultiTermsRequest): Observable<FetchMultiTermsResponese>;
+  fetchAll(request: FetchAllRequest): Observable<FetchAllResponse>;
+
+  findById(request: FindByIdRequest): Observable<FindByIdResponse>;
 }
 
 export interface EvaluationServiceController {
-  fetchMultiTerms(
-    request: FetchMultiTermsRequest,
-  ): Promise<FetchMultiTermsResponese> | Observable<FetchMultiTermsResponese> | FetchMultiTermsResponese;
+  fetchAll(request: FetchAllRequest): Promise<FetchAllResponse> | Observable<FetchAllResponse> | FetchAllResponse;
+
+  findById(request: FindByIdRequest): Promise<FindByIdResponse> | Observable<FindByIdResponse> | FindByIdResponse;
 }
 
 export function EvaluationServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["fetchMultiTerms"];
+    const grpcMethods: string[] = ["fetchAll", "findById"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("EvaluationService", method)(constructor.prototype[method], method, descriptor);
