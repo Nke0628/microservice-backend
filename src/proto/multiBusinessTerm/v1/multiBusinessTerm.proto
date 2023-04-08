@@ -9,17 +9,17 @@ service EvaluationService {
 
 message MultiBusinessTerm{
     int32 id = 1;
-    string businessTermName = 2;
-    string businessTermStartDate =3;
-    string businessTermEndDate =4;
-    string multiTermStartDate =5;
-    string multiTermEndDate =6;
+    string business_term_name = 2;
+    string business_term_start_date =3;
+    string business_term_end_date =4;
+    string multi_term_start_date =5;
+    string multi_term_end_date =6;
 }
 
 message FetchAllRequest{}
 
 message FetchAllResponse{
-    repeated MultiBusinessTerm multiBusinessTerm = 1;
+    repeated MultiBusinessTerm multi_business_term_list = 1;
 }
 
 message FindByIdRequest{
@@ -27,5 +27,5 @@ message FindByIdRequest{
 }
 
 message FindByIdResponse{
-    MultiBusinessTerm MultiBusinessTerm = 1;
+    MultiBusinessTerm multi_business_term = 1;
 }

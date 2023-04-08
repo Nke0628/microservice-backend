@@ -37,6 +37,6 @@ export class MultiBusinessTermController
       };
       ret.push(temp);
     });
-    return { multiBusinessTerm: ret };
+    return { multiBusinessTermList: ret };
   }
 }

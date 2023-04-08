@@ -17,7 +17,7 @@ export interface FetchAllRequest {
 }
 
 export interface FetchAllResponse {
-  multiBusinessTerm: MultiBusinessTerm[];
+  multiBusinessTermList: MultiBusinessTerm[];
 }
 
 export interface FindByIdRequest {
@@ -25,7 +25,7 @@ export interface FindByIdRequest {
 }
 
 export interface FindByIdResponse {
-  MultiBusinessTerm: MultiBusinessTerm | undefined;
+  multiBusinessTerm: MultiBusinessTerm | undefined;
 }
 
 export const EVALUATION_PACKAGE_NAME = "evaluation";
