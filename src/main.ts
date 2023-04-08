@@ -8,10 +8,10 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: 'localhost:5000',
-      package: 'evaluation',
+      package: 'multi_evaluation.v1',
       protoPath: join(
         __dirname,
-        'proto/multiBusinessTerm/v1/multiBusinessTerm.proto',
+        'proto/multi_evaluation/v1/multi_evaluation.proto',
       ),
     },
   });

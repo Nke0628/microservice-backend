@@ -1,28 +1,27 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
 import {
-  EvaluationServiceController,
-  FetchAllRequest,
-  FetchAllResponse,
   FindByIdRequest,
   FindByIdResponse,
-  MultiBusinessTerm,
-} from 'src/proto/generated/multiBusinessTerm';
+  FetchAllRequest,
+  FetchAllResponse,
+  MultiEvaluationServiceController,
+} from 'src/proto/generated/multi_evaluation';
+
 import { MultiBusinessTermRepository } from '../infrastructure/multiBusinessTerm.respository';
 
 @Controller('')
 export class MultiBusinessTermController
-  implements EvaluationServiceController
+  implements MultiEvaluationServiceController
 {
   constructor(
     private readonly multiTermRepository: MultiBusinessTermRepository,
   ) {}
-  @GrpcMethod('EvaluationService')
+  @GrpcMethod('MultiEvaluationService')
   findById(request: FindByIdRequest): Promise<FindByIdResponse> {
     throw new Error('Method not implemented.');
   }
-  @GrpcMethod('EvaluationService')
+  @GrpcMethod('MultiEvaluationService')
   async fetchAll(request: FetchAllRequest): Promise<FetchAllResponse> {
     const responese = await this.multiTermRepository.fetchAll();
     const ret = [];

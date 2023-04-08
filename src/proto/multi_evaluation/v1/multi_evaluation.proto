@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package evaluation;
+package multi_evaluation.v1;
 
-service EvaluationService {
+service MultiEvaluationService {
     rpc FetchAll(FetchAllRequest)returns(FetchAllResponse){}
     rpc FindById(FindByIdRequest)returns(FindByIdResponse){}
 }
