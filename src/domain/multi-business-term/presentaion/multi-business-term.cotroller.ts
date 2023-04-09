@@ -8,7 +8,7 @@ import {
   MultiEvaluationServiceController,
 } from 'src/proto/generated/multi_evaluation';
 
-import { MultiBusinessTermRepository } from '../infrastructure/multiBusinessTerm.respository';
+import { MultiBusinessTermRepository } from '../infrastructure/multi-business-term.respository';
 
 @Controller('')
 export class MultiBusinessTermController

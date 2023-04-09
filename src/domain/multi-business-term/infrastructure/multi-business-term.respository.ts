@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prsima.service';
-import { multiBusinessTerm } from '../Entity/multiBusinessTerm';
-import { multiBusinessTermList } from '../Entity/multiBusinessTermList';
+import { MultiBusinessTerm } from '../entity/multi-business-term';
+import { MultiBusinessTermList } from '../entity/multi-busines-term-list';
 
 @Injectable()
 export class MultiBusinessTermRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  async fetchAll(): Promise<multiBusinessTermList> {
+  async fetchAll(): Promise<MultiBusinessTermList> {
     const res = await this.prismaService.multiTerm.findMany({
       include: {
         business_term: true,
       },
     });
-    const dataList: multiBusinessTerm[] = [];
+    const dataList: MultiBusinessTerm[] = [];
     res.map((data) => {
-      const multiTerm = multiBusinessTerm.create(
+      const multiTerm = MultiBusinessTerm.create(
         data.id,
         data.business_term.term_name,
         data.business_term.start_date,
@@ -24,9 +24,9 @@ export class MultiBusinessTermRepository {
       );
       dataList.push(multiTerm);
     });
-    return multiBusinessTermList.create(dataList);
+    return MultiBusinessTermList.create(dataList);
   }
-  async findById(id: number): Promise<multiBusinessTerm> {
+  async findById(id: number): Promise<MultiBusinessTerm> {
     const data = await this.prismaService.multiTerm.findUnique({
       where: {
         id,
@@ -35,7 +35,7 @@ export class MultiBusinessTermRepository {
         business_term: true,
       },
     });
-    return multiBusinessTerm.create(
+    return MultiBusinessTerm.create(
       data.id,
       data.business_term.term_name,
       data.business_term.start_date,

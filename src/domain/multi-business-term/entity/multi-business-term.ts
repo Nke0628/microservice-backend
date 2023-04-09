@@ -1,19 +1,12 @@
 // 360度評価期間
-export class multiBusinessTerm {
-  private id: number;
-  private businessTermName: string;
-  private businessTermStartDate: Date;
-  private businessTermEndDate: Date;
-  private MultiTermStartDate: Date;
-  private MultiTermEndDate: Date;
-
+export class MultiBusinessTerm {
   private constructor(
-    id: number,
-    businessTermName: string,
-    businessTermStartDate: Date,
-    businessTermEndDate: Date,
-    MultiTermStartDate: Date,
-    MultiTermEndDate: Date,
+    private id: number,
+    private businessTermName: string,
+    private businessTermStartDate: Date,
+    private businessTermEndDate: Date,
+    private MultiTermStartDate: Date,
+    private MultiTermEndDate: Date,
   ) {
     this.id = id;
     this.businessTermName = businessTermName;
@@ -31,7 +24,7 @@ export class multiBusinessTerm {
     MultiTermStartDate: Date,
     MultiTermEndDate: Date,
   ) {
-    return new multiBusinessTerm(
+    return new MultiBusinessTerm(
       id,
       businessTermName,
       businessTermStartDate,
