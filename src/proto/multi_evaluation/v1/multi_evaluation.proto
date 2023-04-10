@@ -4,7 +4,6 @@ package multi_evaluation.v1;
 
 service MultiEvaluationService {
     rpc FetchAll(FetchAllRequest)returns(FetchAllResponse){}
-    rpc FindById(FindByIdRequest)returns(FindByIdResponse){}
 }
 
 message MultiBusinessTerm{
@@ -16,16 +15,11 @@ message MultiBusinessTerm{
     string multi_term_end_date =6;
 }
 
-message FetchAllRequest{}
+message FetchAllRequest{
+    int32 take  = 1;
+    bool order_by = 2;
+}
 
 message FetchAllResponse{
     repeated MultiBusinessTerm multi_business_term_list = 1;
-}
-
-message FindByIdRequest{
-    int32 id = 1;
-}
-
-message FindByIdResponse{
-    MultiBusinessTerm multi_business_term = 1;
 }

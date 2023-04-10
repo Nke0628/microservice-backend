@@ -7,5 +7,6 @@ import { MultiBusinessTermController } from './presentaion/multi-business-term.c
   imports: [PrismaModule],
   controllers: [MultiBusinessTermController],
   providers: [MultiBusinessTermRepository],
+  exports: [MultiBusinessTermRepository],
 })
 export class MultiTermModule {}
