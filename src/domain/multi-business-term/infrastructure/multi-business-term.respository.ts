@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prsima.service';
 import { MultiBusinessTerm } from '../entity/multi-business-term';
 import { MultiBusinessTermList } from '../entity/multi-busines-term-list';
 import { FetchAllRequest } from 'src/proto/generated/multi_evaluation';
+import { MultiBusinessTermMapper } from '../mapper/multi-business-term.mapper';
 
 @Injectable()
 export class MultiBusinessTermRepository {
@@ -19,15 +20,13 @@ export class MultiBusinessTermRepository {
     });
     const dataList: MultiBusinessTerm[] = [];
     res.map((data) => {
-      const multiTerm = MultiBusinessTerm.create(
-        {
-          businessTermName: data.business_term.term_name,
-          businessTermStartDate: data.business_term.start_date,
-          businessTermEndDate: data.business_term.end_date,
-          MultiTermStartDate: data.start_date,
-          MultiTermEndDate: data.end_date,
-        },
+      const multiTerm = MultiBusinessTermMapper.toDomain(
         data.id,
+        data.business_term.term_name,
+        data.business_term.start_date,
+        data.business_term.end_date,
+        data.start_date,
+        data.end_date,
       );
       dataList.push(multiTerm);
     });

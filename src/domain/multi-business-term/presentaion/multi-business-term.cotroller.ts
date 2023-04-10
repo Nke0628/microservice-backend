@@ -1,4 +1,4 @@
-import { Controller, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, HttpStatus } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
   FetchAllRequest,
@@ -6,35 +6,20 @@ import {
   MultiEvaluationServiceController,
 } from 'src/proto/generated/multi_evaluation';
 
-import { MultiBusinessTermRepository } from '../infrastructure/multi-business-term.respository';
+import { MultiBusinessTermService } from '../service/multi-business-term.service';
 
 @Controller('')
 export class MultiBusinessTermController
   implements MultiEvaluationServiceController
 {
-  constructor(
-    private readonly multiTermRepository: MultiBusinessTermRepository,
-  ) {}
+  constructor(private readonly multiTermService: MultiBusinessTermService) {}
   @GrpcMethod('MultiEvaluationService')
   async fetchAll(arg: FetchAllRequest): Promise<FetchAllResponse> {
-    const responese = await this.multiTermRepository.fetchAll(arg);
-    const ret = [];
-    responese.getList().map((data) => {
-      const temp = {
-        id: data.getId,
-        businessTermName: data.getBusinessTermName,
-        businessTermStartDate: data.getBusinessTermStartDate.toLocaleString(),
-        businessTermEndDate: data.getBusinessTermEndDate.toString(),
-        multiTermStartDate: data.getMultiTermStartDate.toString(),
-        multiTermEndDate: data.getMultiTermEndDate.toString(),
-        isCurrentTerm: data.isCurrentTerm(),
-      };
-      ret.push(temp);
-    });
+    const res = await this.multiTermService.fetchAll(arg);
     return {
       status: HttpStatus.OK,
       error: '',
-      multiBusinessTermList: ret,
+      multiBusinessTermList: res,
     };
   }
 }
