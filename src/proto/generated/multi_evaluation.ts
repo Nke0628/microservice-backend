@@ -11,6 +11,7 @@ export interface MultiBusinessTerm {
   businessTermEndDate: string;
   multiTermStartDate: string;
   multiTermEndDate: string;
+  isCurrentTerm: boolean;
 }
 
 export interface FetchAllRequest {
@@ -19,6 +20,8 @@ export interface FetchAllRequest {
 }
 
 export interface FetchAllResponse {
+  status: number;
+  error: string;
   multiBusinessTermList: MultiBusinessTerm[];
 }
 

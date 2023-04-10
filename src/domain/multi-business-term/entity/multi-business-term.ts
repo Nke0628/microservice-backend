@@ -1,37 +1,20 @@
+import { Entity } from 'src/domain/shared/entitiy';
+
 // 360度評価期間
-export class MultiBusinessTerm {
-  private constructor(
-    private id: number,
-    private businessTermName: string,
-    private businessTermStartDate: Date,
-    private businessTermEndDate: Date,
-    private MultiTermStartDate: Date,
-    private MultiTermEndDate: Date,
-  ) {
-    this.id = id;
-    this.businessTermName = businessTermName;
-    this.businessTermStartDate = businessTermStartDate;
-    this.businessTermEndDate = businessTermEndDate;
-    this.MultiTermStartDate = MultiTermStartDate;
-    this.MultiTermEndDate = MultiTermEndDate;
+interface IMultiBusinessTermProps {
+  businessTermName: string;
+  businessTermStartDate: Date;
+  businessTermEndDate: Date;
+  MultiTermStartDate: Date;
+  MultiTermEndDate: Date;
+}
+export class MultiBusinessTerm extends Entity<IMultiBusinessTermProps> {
+  private constructor(props: IMultiBusinessTermProps, id: number) {
+    super(props, id);
   }
 
-  public static create(
-    id: number,
-    businessTermName: string,
-    businessTermStartDate: Date,
-    businessTermEndDate: Date,
-    MultiTermStartDate: Date,
-    MultiTermEndDate: Date,
-  ) {
-    return new MultiBusinessTerm(
-      id,
-      businessTermName,
-      businessTermStartDate,
-      businessTermEndDate,
-      MultiTermStartDate,
-      MultiTermEndDate,
-    );
+  public static create(props: IMultiBusinessTermProps, id: number) {
+    return new MultiBusinessTerm(props, id);
   }
 
   get getId() {
@@ -39,22 +22,31 @@ export class MultiBusinessTerm {
   }
 
   get getBusinessTermName() {
-    return this.businessTermName;
+    return this.props.businessTermName;
   }
 
   get getBusinessTermStartDate() {
-    return this.businessTermStartDate;
+    return this.props.businessTermStartDate;
   }
 
   get getBusinessTermEndDate() {
-    return this.businessTermEndDate;
+    return this.props.businessTermEndDate;
   }
 
   get getMultiTermStartDate() {
-    return this.MultiTermStartDate;
+    return this.props.MultiTermStartDate;
   }
 
   get getMultiTermEndDate() {
-    return this.MultiTermEndDate;
+    return this.props.MultiTermEndDate;
+  }
+
+  // 現在対象期間かどうか
+  public isCurrentTerm(): boolean {
+    const currentDate = new Date();
+    return (
+      this.props.businessTermStartDate.getTime() <= currentDate.getTime() &&
+      this.props.businessTermEndDate.getTime() >= currentDate.getTime()
+    );
   }
 }

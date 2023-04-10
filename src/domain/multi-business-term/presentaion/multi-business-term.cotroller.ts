@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
   FetchAllRequest,
@@ -27,9 +27,14 @@ export class MultiBusinessTermController
         businessTermEndDate: data.getBusinessTermEndDate.toString(),
         multiTermStartDate: data.getMultiTermStartDate.toString(),
         multiTermEndDate: data.getMultiTermEndDate.toString(),
+        isCurrentTerm: data.isCurrentTerm(),
       };
       ret.push(temp);
     });
-    return { multiBusinessTermList: ret };
+    return {
+      status: HttpStatus.OK,
+      error: '',
+      multiBusinessTermList: ret,
+    };
   }
 }

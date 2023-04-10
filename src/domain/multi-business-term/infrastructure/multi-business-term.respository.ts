@@ -20,33 +20,17 @@ export class MultiBusinessTermRepository {
     const dataList: MultiBusinessTerm[] = [];
     res.map((data) => {
       const multiTerm = MultiBusinessTerm.create(
+        {
+          businessTermName: data.business_term.term_name,
+          businessTermStartDate: data.business_term.start_date,
+          businessTermEndDate: data.business_term.end_date,
+          MultiTermStartDate: data.start_date,
+          MultiTermEndDate: data.end_date,
+        },
         data.id,
-        data.business_term.term_name,
-        data.business_term.start_date,
-        data.business_term.end_date,
-        data.start_date,
-        data.end_date,
       );
       dataList.push(multiTerm);
     });
     return MultiBusinessTermList.create(dataList);
-  }
-  async findById(id: number): Promise<MultiBusinessTerm> {
-    const data = await this.prismaService.multiTerm.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        business_term: true,
-      },
-    });
-    return MultiBusinessTerm.create(
-      data.id,
-      data.business_term.term_name,
-      data.business_term.start_date,
-      data.business_term.end_date,
-      data.start_date,
-      data.end_date,
-    );
   }
 }
