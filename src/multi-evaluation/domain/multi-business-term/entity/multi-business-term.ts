@@ -1,4 +1,4 @@
-import { Entity } from 'src/domain/shared/entitiy';
+import { Entity } from 'src/multi-evaluation/domain/shared/entitiy';
 
 // 360度評価期間
 interface IMultiBusinessTermProps {

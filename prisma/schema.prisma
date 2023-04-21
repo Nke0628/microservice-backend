@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -26,6 +27,24 @@ model MultiTerm {
   business_term_id Int @unique
   start_date DateTime
   end_date DateTime
+  multi_evaluation MultiEvaluation[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+model User {
+  id Int @id
+  name String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+model MultiEvaluation {
+  id Int @id @default(autoincrement())
+  user_id Int
+  target_user_id Int
+  multi_term MultiTerm @relation(fields: [multi_term_id],references: [id])
+  multi_term_id Int
+  score Int
+  comment String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
