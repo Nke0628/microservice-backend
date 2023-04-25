@@ -4,7 +4,8 @@ export class MultiEvaluation {
     private targetUserId: number,
     private multiTermId: number,
     private score: number,
-    private comment: string,
+    private goodComment: string,
+    private improvementComment: string,
     private id?: number,
   ) {
     this.id = id;
@@ -12,11 +13,12 @@ export class MultiEvaluation {
     this.targetUserId = targetUserId;
     this.multiTermId = multiTermId;
     this.score = score;
-    this.comment = comment;
+    this.goodComment = goodComment;
+    this.improvementComment = improvementComment;
   }
 
   public static newCreate(): MultiEvaluation {
-    return new MultiEvaluation(0, 0, 0, 0, '');
+    return new MultiEvaluation(0, 0, 0, 0, '', '');
   }
 
   public submit(
@@ -34,7 +36,8 @@ export class MultiEvaluation {
     this.targetUserId = targetUserId;
     this.multiTermId = multiTermId;
     this.score = score;
-    this.comment = comment;
+    this.goodComment = comment;
+    this.improvementComment = this.improvementComment;
   }
 
   get getId(): number | null {
@@ -57,7 +60,11 @@ export class MultiEvaluation {
     return this.score;
   }
 
-  get getComment(): string {
-    return this.comment;
+  get getGoodComment(): string {
+    return this.goodComment;
+  }
+
+  get getImprovementComment(): string {
+    return this.improvementComment;
   }
 }

@@ -44,7 +44,8 @@ model MultiEvaluation {
   multi_term MultiTerm @relation(fields: [multi_term_id],references: [id])
   multi_term_id Int
   score Int
-  comment String
+  good_comment String
+  improvement_comment String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

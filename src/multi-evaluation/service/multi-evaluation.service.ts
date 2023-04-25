@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import {
   FetchAllRequest,
+  FetchByTermIdAndUserIdRequst,
   MultiBusinessTerm,
   SubmitMultiEvaluationRequest,
 } from 'src/proto/generated/multi_evaluation';
 import { MultiBusinessTermRepository } from '../domain/multi-business-term/infrastructure/multi-business-term.respository';
 import { MultiEvaluation } from '../domain/multi-evaluation/entitiy/multi-evaluation';
+import { MultiEvaluationList } from '../domain/multi-evaluation/entitiy/multi-evaluation-list';
 import { MultiEvaluationRepository } from '../domain/multi-evaluation/infrastructure/multi-evaluation.repository';
 
 @Injectable()
@@ -30,6 +32,15 @@ export class MultiBusinessTermService {
       ret.push(temp);
     });
     return ret;
+  }
+
+  async fetchByTermIdAndUserId(
+    request: FetchByTermIdAndUserIdRequst,
+  ): Promise<MultiEvaluationList> {
+    return await this.multiEvaluationRepository.fetchByTermIdAndUserId(
+      request.termid,
+      request.userId,
+    );
   }
 
   async subumitMultiEvaluation(
