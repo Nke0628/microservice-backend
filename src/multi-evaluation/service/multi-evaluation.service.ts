@@ -37,8 +37,18 @@ export class MultiEvaluationService {
   async fetchByTermIdAndUserId(
     request: FetchByTermIdAndUserIdRequst,
   ): Promise<MultiEvaluationList> {
+    let temrId = request.termid;
+    if (temrId === 0) {
+      const multiEvaluationList = await this.multiTermRepository.fetchAll({
+        take: 100,
+        orderBy: true,
+      });
+      const currentTerm = multiEvaluationList.getCurrentTerm();
+      temrId = currentTerm.getId;
+    }
+
     return await this.multiEvaluationRepository.fetchByTermIdAndUserId(
-      request.termid,
+      temrId,
       request.userId,
     );
   }

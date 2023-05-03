@@ -14,4 +14,14 @@ export class MultiBusinessTermList {
   public getList(): MultiBusinessTerm[] {
     return this.multiTermList;
   }
+
+  public getCurrentTerm(): MultiBusinessTerm | null {
+    let ret = null;
+    this.multiTermList.map((multiBusinessTerm) => {
+      if (multiBusinessTerm.isCurrentTerm()) {
+        ret = multiBusinessTerm;
+      }
+    });
+    return ret;
+  }
 }
