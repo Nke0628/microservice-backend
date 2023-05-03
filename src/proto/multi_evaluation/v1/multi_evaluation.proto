@@ -67,12 +67,14 @@ message SubmitMultiEvaluationRequest{
     int32 target_user_id = 2;
     int32 multi_term_id = 3;
     int32 score = 4;
-    string comment = 5;
+    string good_comment = 5;
+    string improvement_comment = 6;
 }
 
 message SubmitMultiEvaluationResponse{
     int32 status = 1;
     string error = 2;
+    MultiEvaluation data = 3;
 }
 
 message FindUserByIdRequest{

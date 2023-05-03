@@ -1,3 +1,5 @@
+import { RpcException } from '@nestjs/microservices';
+
 export class MultiEvaluation {
   public constructor(
     private userId: number,
@@ -26,7 +28,8 @@ export class MultiEvaluation {
     targetUserId: number,
     multiTermId: number,
     score: number,
-    comment: string,
+    goodComment: string,
+    improvementComment: string,
   ): void {
     // 全項目必須
     // 同じ期に同じtarget_user_idへ登録していないか
@@ -36,8 +39,8 @@ export class MultiEvaluation {
     this.targetUserId = targetUserId;
     this.multiTermId = multiTermId;
     this.score = score;
-    this.goodComment = comment;
-    this.improvementComment = this.improvementComment;
+    this.goodComment = goodComment;
+    this.improvementComment = improvementComment;
   }
 
   get getId(): number | null {

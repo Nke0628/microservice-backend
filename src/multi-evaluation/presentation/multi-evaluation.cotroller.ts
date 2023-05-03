@@ -15,14 +15,14 @@ import {
 } from 'src/proto/generated/multi_evaluation';
 import { UserRepository } from '../domain/user/infrastructure/user.repository';
 
-import { MultiBusinessTermService } from '../service/multi-evaluation.service';
+import { MultiEvaluationService } from '../service/multi-evaluation.service';
 
 @Controller('')
 export class MultiEvaluationController
   implements MultiEvaluationServiceController
 {
   constructor(
-    private readonly multiTermService: MultiBusinessTermService,
+    private readonly multiEvaluationService: MultiEvaluationService,
     private readonly userRepository: UserRepository,
   ) {}
 
@@ -64,7 +64,7 @@ export class MultiEvaluationController
   // 360度評価期間全取得
   @GrpcMethod('MultiEvaluationService')
   async fetchAll(request: FetchAllRequest): Promise<FetchAllResponse> {
-    const res = await this.multiTermService.fetchAll(request);
+    const res = await this.multiEvaluationService.fetchAll(request);
     return {
       status: HttpStatus.OK,
       error: '',
@@ -77,7 +77,7 @@ export class MultiEvaluationController
   async fetchByTermIdAndUserId(
     request: FetchByTermIdAndUserIdRequst,
   ): Promise<FetchByTermIdAndUserIdResponse> {
-    const response = await this.multiTermService.fetchByTermIdAndUserId(
+    const response = await this.multiEvaluationService.fetchByTermIdAndUserId(
       request,
     );
 
@@ -103,10 +103,20 @@ export class MultiEvaluationController
   async submitMultiEvaluation(
     request: SubmitMultiEvaluationRequest,
   ): Promise<SubmitMultiEvaluationResponse> {
-    await this.multiTermService.subumitMultiEvaluation(request);
+    const multiEvaluation =
+      await this.multiEvaluationService.subumitMultiEvaluation(request);
     return {
       status: HttpStatus.OK,
       error: '',
+      data: {
+        id: multiEvaluation.getId,
+        userId: multiEvaluation.getUserId,
+        targetUserId: multiEvaluation.getTargetUserId,
+        multiTermId: multiEvaluation.getMultiTermId,
+        score: multiEvaluation.getScore,
+        goodComment: multiEvaluation.getGoodComment,
+        improvementComment: multiEvaluation.getImprovementComment,
+      },
     };
   }
 }

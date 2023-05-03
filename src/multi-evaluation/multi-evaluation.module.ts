@@ -4,7 +4,7 @@ import { MultiBusinessTermRepository } from './domain/multi-business-term/infras
 import { MultiEvaluationRepository } from './domain/multi-evaluation/infrastructure/multi-evaluation.repository';
 import { UserRepository } from './domain/user/infrastructure/user.repository';
 import { MultiEvaluationController } from './presentation/multi-evaluation.cotroller';
-import { MultiBusinessTermService } from './service/multi-evaluation.service';
+import { MultiEvaluationService } from './service/multi-evaluation.service';
 
 @Module({
   imports: [PrismaModule],
@@ -13,7 +13,7 @@ import { MultiBusinessTermService } from './service/multi-evaluation.service';
     UserRepository,
     MultiBusinessTermRepository,
     MultiEvaluationRepository,
-    MultiBusinessTermService,
+    MultiEvaluationService,
   ],
   exports: [MultiBusinessTermRepository],
 })

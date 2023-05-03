@@ -11,7 +11,7 @@ import { MultiEvaluationList } from '../domain/multi-evaluation/entitiy/multi-ev
 import { MultiEvaluationRepository } from '../domain/multi-evaluation/infrastructure/multi-evaluation.repository';
 
 @Injectable()
-export class MultiBusinessTermService {
+export class MultiEvaluationService {
   constructor(
     private readonly multiTermRepository: MultiBusinessTermRepository,
     private readonly multiEvaluationRepository: MultiEvaluationRepository,
@@ -45,15 +45,16 @@ export class MultiBusinessTermService {
 
   async subumitMultiEvaluation(
     request: SubmitMultiEvaluationRequest,
-  ): Promise<void> {
+  ): Promise<MultiEvaluation> {
     const multiEvaluation = MultiEvaluation.newCreate();
     multiEvaluation.submit(
       request.userId,
       request.targetUserId,
       request.multiTermId,
       request.score,
-      request.comment,
+      request.goodComment,
+      request.improvementComment,
     );
-    this.multiEvaluationRepository.create(multiEvaluation);
+    return this.multiEvaluationRepository.create(multiEvaluation);
   }
 }
