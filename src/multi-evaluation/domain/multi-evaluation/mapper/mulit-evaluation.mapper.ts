@@ -1,6 +1,6 @@
 import { MultiEvaluation as MultiEvaluationModel } from '@prisma/client';
-import { MultiEvaluation } from '../entitiy/multi-evaluation';
-import { MultiEvaluationList } from '../entitiy/multi-evaluation-list';
+import { MultiEvaluation } from '../model/multi-evaluation';
+import { MultiEvaluationList } from '../model/multi-evaluation-list';
 
 export class MultiEvaluationMapper {
   public static toDomain(

@@ -5,7 +5,6 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { join } from 'path';
-import { AllExceptionFilter } from './all-exception-filter';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -20,11 +19,6 @@ async function bootstrap() {
       ),
     },
   });
-  const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(
-    new AllExceptionFilter(httpAdapter),
-    new BaseRpcExceptionFilter(),
-  );
   await app.listen();
 }
 bootstrap();

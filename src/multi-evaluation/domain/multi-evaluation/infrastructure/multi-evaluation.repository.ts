@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prsima.service';
-import { MultiEvaluation } from '../entitiy/multi-evaluation';
-import { MultiEvaluationList } from '../entitiy/multi-evaluation-list';
+import { MultiEvaluation } from '../model/multi-evaluation';
+import { MultiEvaluationList } from '../model/multi-evaluation-list';
 import { MultiEvaluationMapper } from '../mapper/mulit-evaluation.mapper';
 
 @Injectable()

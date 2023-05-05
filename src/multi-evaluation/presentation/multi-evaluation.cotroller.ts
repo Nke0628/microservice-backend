@@ -1,10 +1,10 @@
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
-  FetchAllRequest,
-  FetchAllResponse,
   FetchByTermIdAndUserIdRequst,
   FetchByTermIdAndUserIdResponse,
+  FetchMultiTermAllRequest,
+  FetchMultiTermAllResponse,
   FetchUsersByIdsRequest,
   FetchUsersByIdsResponse,
   FindUserByIdRequest,
@@ -13,17 +13,19 @@ import {
   SubmitMultiEvaluationRequest,
   SubmitMultiEvaluationResponse,
 } from 'src/proto/generated/multi_evaluation';
+import { MultiEvaluation } from '../domain/multi-evaluation/model/multi-evaluation';
+import { MultiEvaluationRepository } from '../domain/multi-evaluation/infrastructure/multi-evaluation.repository';
+import { MultiTermRepository } from '../domain/multi-term/infrastructure/multi-term.respository';
 import { UserRepository } from '../domain/user/infrastructure/user.repository';
-
-import { MultiEvaluationService } from '../service/multi-evaluation.service';
 
 @Controller('')
 export class MultiEvaluationController
   implements MultiEvaluationServiceController
 {
   constructor(
-    private readonly multiEvaluationService: MultiEvaluationService,
     private readonly userRepository: UserRepository,
+    private readonly multiTermRepository: MultiTermRepository,
+    private readonly multiEvaluationRepository: MultiEvaluationRepository,
   ) {}
 
   // ユーザ情報取得
@@ -31,14 +33,11 @@ export class MultiEvaluationController
   async findUserById(
     request: FindUserByIdRequest,
   ): Promise<FindUserByIdResponse> {
-    console.log('hoge');
     const user = await this.userRepository.findById(request.userId);
     return {
-      status: HttpStatus.OK,
-      error: '',
       data: {
-        id: user.getId,
-        name: user.getName,
+        id: user.map((user) => user.getId).orElse(0),
+        name: user.map((user) => user.getName).orElse(''),
       },
     };
   }
@@ -50,8 +49,6 @@ export class MultiEvaluationController
   ): Promise<FetchUsersByIdsResponse> {
     const userList = await this.userRepository.fechtByIds(request.userIds);
     return {
-      status: HttpStatus.OK,
-      error: '',
       data: userList.getList.map((user) => {
         return {
           id: user.getId,
@@ -63,12 +60,25 @@ export class MultiEvaluationController
 
   // 360度評価期間全取得
   @GrpcMethod('MultiEvaluationService')
-  async fetchAll(request: FetchAllRequest): Promise<FetchAllResponse> {
-    const res = await this.multiEvaluationService.fetchAll(request);
+  async fetchMultiTermAll(
+    request: FetchMultiTermAllRequest,
+  ): Promise<FetchMultiTermAllResponse> {
+    const multiTermList = await this.multiTermRepository.fetchAll(
+      request.take,
+      request.orderBy,
+    );
     return {
-      status: HttpStatus.OK,
-      error: '',
-      data: res,
+      data: multiTermList.getList().map((data) => {
+        return {
+          id: data.getId,
+          businessTermName: data.getBusinessTermName,
+          businessTermStartDate: data.getBusinessTermStartDate.toLocaleString(),
+          businessTermEndDate: data.getBusinessTermEndDate.toString(),
+          multiTermStartDate: data.getMultiTermStartDate.toString(),
+          multiTermEndDate: data.getMultiTermEndDate.toString(),
+          isCurrentTerm: data.isCurrentTerm(),
+        };
+      }),
     };
   }
 
@@ -77,14 +87,22 @@ export class MultiEvaluationController
   async fetchByTermIdAndUserId(
     request: FetchByTermIdAndUserIdRequst,
   ): Promise<FetchByTermIdAndUserIdResponse> {
-    const response = await this.multiEvaluationService.fetchByTermIdAndUserId(
-      request,
-    );
-
+    let targetTermId = request.termId;
+    if (targetTermId === 0) {
+      const multiEvaluationList = await this.multiTermRepository.fetchAll(
+        100,
+        true,
+      );
+      const currentTerm = multiEvaluationList.getCurrentTerm();
+      targetTermId = currentTerm.map((multiTerm) => multiTerm.getId).orElse(0);
+    }
+    const multiEvaluationList =
+      await this.multiEvaluationRepository.fetchByTermIdAndUserId(
+        targetTermId,
+        request.userId,
+      );
     return {
-      status: HttpStatus.OK,
-      error: '',
-      data: response.getList().map((multiEvaluation) => {
+      data: multiEvaluationList.getList().map((multiEvaluation) => {
         return {
           id: multiEvaluation.getId,
           userId: multiEvaluation.getUserId,
@@ -103,19 +121,26 @@ export class MultiEvaluationController
   async submitMultiEvaluation(
     request: SubmitMultiEvaluationRequest,
   ): Promise<SubmitMultiEvaluationResponse> {
-    const multiEvaluation =
-      await this.multiEvaluationService.subumitMultiEvaluation(request);
+    const multiEvaluation = MultiEvaluation.newCreate();
+    multiEvaluation.submit(
+      request.userId,
+      request.targetUserId,
+      request.multiTermId,
+      request.score,
+      request.goodComment,
+      request.improvementComment,
+    );
+    const submittedMultiEvaluation =
+      await this.multiEvaluationRepository.create(multiEvaluation);
     return {
-      status: HttpStatus.OK,
-      error: '',
       data: {
-        id: multiEvaluation.getId,
-        userId: multiEvaluation.getUserId,
-        targetUserId: multiEvaluation.getTargetUserId,
-        multiTermId: multiEvaluation.getMultiTermId,
-        score: multiEvaluation.getScore,
-        goodComment: multiEvaluation.getGoodComment,
-        improvementComment: multiEvaluation.getImprovementComment,
+        id: submittedMultiEvaluation.getId,
+        userId: submittedMultiEvaluation.getUserId,
+        targetUserId: submittedMultiEvaluation.getTargetUserId,
+        multiTermId: submittedMultiEvaluation.getMultiTermId,
+        score: submittedMultiEvaluation.getScore,
+        goodComment: submittedMultiEvaluation.getGoodComment,
+        improvementComment: submittedMultiEvaluation.getImprovementComment,
       },
     };
   }

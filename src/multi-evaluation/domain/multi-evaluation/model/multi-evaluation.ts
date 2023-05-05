@@ -1,5 +1,3 @@
-import { RpcException } from '@nestjs/microservices';
-
 export class MultiEvaluation {
   public constructor(
     private userId: number,

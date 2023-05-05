@@ -6,6 +6,7 @@ export class UserMapper {
   public static toDomain(userEntity: UserEntity): User {
     return new User(userEntity.id, userEntity.name);
   }
+
   public static toDomainList(userEntities: UserEntity[]): UserList {
     const userList = userEntities.map((userEntity) => {
       return this.toDomain(userEntity);

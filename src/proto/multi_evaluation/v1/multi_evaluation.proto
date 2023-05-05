@@ -3,11 +3,11 @@ syntax = "proto3";
 package multi_evaluation.v1;
 
 service MultiEvaluationService {
-    // MultiBusinessTerm
-    rpc FetchAll(FetchAllRequest)returns(FetchAllResponse){}
-    rpc FetchByTermIdAndUserId(FetchByTermIdAndUserIdRequst)returns(FetchByTermIdAndUserIdResponse){}
+    // MultiTerm
+    rpc FetchMultiTermAll(FetchMultiTermAllRequest)returns(FetchMultiTermAllResponse){}
 
     // MultiEvaluation
+    rpc FetchByTermIdAndUserId(FetchByTermIdAndUserIdRequst)returns(FetchByTermIdAndUserIdResponse){}
     rpc SubmitMultiEvaluation(SubmitMultiEvaluationRequest)returns(SubmitMultiEvaluationResponse){}
 
     // User
@@ -15,7 +15,7 @@ service MultiEvaluationService {
     rpc FetchUsersByIds(FetchUsersByIdsRequest)returns(FetchUsersByIdsResponse){}
 }
 
-message MultiBusinessTerm{
+message MultiTerm{
     int32 id = 1;
     string business_term_name = 2;
     string business_term_start_date =3;
@@ -40,26 +40,22 @@ message User {
     string name= 2;
 }
 
-message FetchAllRequest{
+message FetchMultiTermAllRequest{
     int32 take  = 1;
     bool order_by = 2;
 }
 
-message FetchAllResponse{
-    int32 status = 1;
-    string error = 2;
-    repeated MultiBusinessTerm data = 3;
+message FetchMultiTermAllResponse{
+    repeated MultiTerm data = 1;
 }
 
 message FetchByTermIdAndUserIdRequst{
-    int32 termid  = 1;
-    int32 userId = 2;
+    int32 term_id  = 1;
+    int32 user_id = 2;
 }
 
 message FetchByTermIdAndUserIdResponse{
-    int32 status = 1;
-    string error = 2;
-    repeated MultiEvaluation data = 3;
+    repeated MultiEvaluation data = 1;
 }
 
 message SubmitMultiEvaluationRequest{
@@ -71,10 +67,8 @@ message SubmitMultiEvaluationRequest{
     string improvement_comment = 6;
 }
 
-message SubmitMultiEvaluationResponse{
-    int32 status = 1;
-    string error = 2;
-    MultiEvaluation data = 3;
+message SubmitMultiEvaluationResponse{  
+    MultiEvaluation data = 1;
 }
 
 message FindUserByIdRequest{
@@ -82,9 +76,7 @@ message FindUserByIdRequest{
 }
 
 message FindUserByIdResponse{
-    int32 status = 1;
-    string error = 2;
-    User data = 3;
+    User data = 1;
 }
 
 message FetchUsersByIdsRequest{
@@ -92,7 +84,5 @@ message FetchUsersByIdsRequest{
 }
 
 message FetchUsersByIdsResponse{
-    int32 status = 1;
-    string error = 2;
-    repeated User data = 3;
+    repeated User data = 1;
 }
