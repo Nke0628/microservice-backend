@@ -1,3 +1,5 @@
+import { RpcException } from '@nestjs/microservices';
+
 export class MultiEvaluation {
   public constructor(
     private userId: number,
@@ -33,6 +35,9 @@ export class MultiEvaluation {
     // 同じ期に同じtarget_user_idへ登録していないか
     // 提出期間の期かどうか
     // コメントは200文字以内かどうか
+    if (goodComment === '') {
+      throw new RpcException('良い点は必須です');
+    }
     this.userId = userId;
     this.targetUserId = targetUserId;
     this.multiTermId = multiTermId;
