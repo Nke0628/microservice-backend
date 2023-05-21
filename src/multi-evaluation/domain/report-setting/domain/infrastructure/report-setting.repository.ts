@@ -22,6 +22,9 @@ export class ReportSettingRepository {
           ReportSettingDetail: true,
         },
       });
+    if (reportSettingwithDetailEntities === null) {
+      return ReportSetting.initialCreate();
+    }
     return ReportSettingMapper.toDomainList(reportSettingwithDetailEntities);
   }
 }

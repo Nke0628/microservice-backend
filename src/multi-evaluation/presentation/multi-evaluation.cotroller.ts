@@ -9,6 +9,10 @@ import {
   FetchReportSettingsByTermIdResponse,
   FetchUsersByIdsRequest,
   FetchUsersByIdsResponse,
+  FindManagerNormaApplyRequest,
+  FindManagerNormaApplyResponse,
+  FindMultiEvaluationByIdRequst,
+  FindMultiEvaluationByIdResponse,
   FindUserByIdRequest,
   FindUserByIdResponse,
   MultiEvaluationServiceController,
@@ -20,6 +24,7 @@ import { MultiEvaluationRepository } from '../domain/multi-evaluation/infrastruc
 import { MultiTermRepository } from '../domain/multi-term/infrastructure/multi-term.respository';
 import { UserRepository } from '../domain/user/infrastructure/user.repository';
 import { ReportSettingRepository } from '../domain/report-setting/domain/infrastructure/report-setting.repository';
+import { FindManagerNormaApplyByUserIdAndMultiTermIdUseCase } from '../usecase/find-manager-norma-apply.usecase';
 
 @Controller('')
 export class MultiEvaluationController
@@ -30,7 +35,36 @@ export class MultiEvaluationController
     private readonly multiTermRepository: MultiTermRepository,
     private readonly multiEvaluationRepository: MultiEvaluationRepository,
     private readonly reportSettingRepository: ReportSettingRepository,
+    private readonly findManagerNormaApplyByUserIdAndMultiTermIdUseCase: FindManagerNormaApplyByUserIdAndMultiTermIdUseCase,
   ) {}
+
+  /**
+   * 管理職ノルマ免除申請取得
+   */
+  @GrpcMethod('MultiEvaluationService')
+  async findManagerNormaApply(
+    request: FindManagerNormaApplyRequest,
+  ): Promise<FindManagerNormaApplyResponse> {
+    const managerNormaApply =
+      await this.findManagerNormaApplyByUserIdAndMultiTermIdUseCase.execute(
+        request.userId,
+        request.multiTermId,
+      );
+    return {
+      id: managerNormaApply.getId,
+      multiTermId: managerNormaApply.getUserId,
+      reason: managerNormaApply.getReason,
+      exemptionCount: managerNormaApply.getexemptionCount,
+      applyStatus: managerNormaApply.getApplyStatus.code,
+      remandReason: managerNormaApply.getRemandReason,
+    };
+  }
+
+  findMultiEvaluationById(
+    request: FindMultiEvaluationByIdRequst,
+  ): Promise<FindMultiEvaluationByIdResponse> {
+    throw new Error('Method not implemented.');
+  }
 
   @GrpcMethod('MultiEvaluationService')
   async fetchReportSettingsByTermId(

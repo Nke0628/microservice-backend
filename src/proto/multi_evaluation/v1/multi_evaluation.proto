@@ -7,6 +7,7 @@ service MultiEvaluationService {
     rpc FetchMultiTermAll(FetchMultiTermAllRequest)returns(FetchMultiTermAllResponse){}
 
     // MultiEvaluation
+    rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequst)returns(FindMultiEvaluationByIdResponse){}
     rpc FetchByTermIdAndUserId(FetchByTermIdAndUserIdRequst)returns(FetchByTermIdAndUserIdResponse){}
     rpc SubmitMultiEvaluation(SubmitMultiEvaluationRequest)returns(SubmitMultiEvaluationResponse){}
 
@@ -14,9 +15,48 @@ service MultiEvaluationService {
     rpc FindUserById(FindUserByIdRequest)returns(FindUserByIdResponse){}
     rpc FetchUsersByIds(FetchUsersByIdsRequest)returns(FetchUsersByIdsResponse){}
 
+    // NormaApply
+    rpc FindManagerNormaApplyByUserIdAndTermId(FindManagerNormaApplyRequest)returns(FindManagerNormaApplyResponse){}
+
     // ReportSetting
     rpc FetchReportSettingsByTermId(FetchReportSettingsByTermIdRequest)returns(FetchReportSettingsByTermIdResponse){}
 }
+
+message FindManagerNormaApplyRequest{
+    int32 user_id = 1;
+    int32 multi_term_id = 2;
+}
+
+enum ApplyStatus {
+    UNAPPLIED = 0;
+    APPLYING = 1;
+    APPROVE = 2;
+    REMAND = 3;
+    EXEMPTION = 4;
+}
+
+message FindManagerNormaApplyResponse{
+    int32 id = 1;
+    int32 multi_term_id = 2;
+    string reason = 3;
+    int32 exemption_count = 4;
+    ApplyStatus apply_status = 5;
+    string remandReason = 6;
+}
+
+message FindMultiEvaluationByIdRequst{
+    int32 id = 1;
+}
+
+message FindMultiEvaluationByIdResponse{
+    int32 id = 1;
+    int32 user_id= 2;
+    int32 target_user_id = 3;
+    float score = 4;
+    string good_comment = 5;
+    string improvement_comment = 6;
+}
+
 
 message FetchReportSettingsByTermIdRequest{
     int32 term_id = 1;

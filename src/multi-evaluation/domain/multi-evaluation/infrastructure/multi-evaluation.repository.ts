@@ -3,10 +3,24 @@ import { PrismaService } from 'src/prisma/prsima.service';
 import { MultiEvaluation } from '../model/multi-evaluation';
 import { MultiEvaluationList } from '../model/multi-evaluation-list';
 import { MultiEvaluationMapper } from '../mapper/mulit-evaluation.mapper';
+import { Optional } from 'typescript-optional';
 
 @Injectable()
 export class MultiEvaluationRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async find(id: number): Promise<Optional<MultiEvaluation>> {
+    const multiEvaluationModel =
+      await this.prismaService.multiEvaluation.findUnique({
+        where: {
+          id,
+        },
+      });
+    return Optional.ofNullable(multiEvaluationModel).map((model) =>
+      MultiEvaluationMapper.toDomain(model),
+    );
+  }
+
   async create(multiEvaluation: MultiEvaluation): Promise<MultiEvaluation> {
     return await this.prismaService.$transaction(async (prisma) => {
       const multiEvaluationModel = await prisma.multiEvaluation.create({

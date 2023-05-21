@@ -8,11 +8,11 @@ export class ReportSettingMapper {
     ReportSettingDetailEntity: ReportSettingDetailEntity,
   ): ReportSettingDetail {
     return new ReportSettingDetail(
-      ReportSettingDetailEntity.id,
       ReportSettingDetailEntity.postioin_layer_type,
       ReportSettingDetailEntity.input_flg,
       ReportSettingDetailEntity.theme,
       ReportSettingDetailEntity.chara_num,
+      ReportSettingDetailEntity.id,
     );
   }
 
@@ -26,10 +26,10 @@ export class ReportSettingMapper {
         },
       );
     return new ReportSetting(
-      reportSettingWithDetailEntity.id,
       reportSettingWithDetailEntity.save_user_id,
       reportSettingWithDetailEntity.saved_at,
       reportSettingList,
+      reportSettingWithDetailEntity.id,
     );
   }
 }

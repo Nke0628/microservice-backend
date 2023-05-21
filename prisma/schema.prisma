@@ -19,14 +19,15 @@ model BusinessTerm {
 }
 
 model MultiTerm {
-  id               Int               @id
-  business_term_id Int               @unique
+  id               Int                @id
+  business_term_id Int                @unique
   start_date       DateTime
   end_date         DateTime
-  created_at       DateTime          @default(now())
-  updated_at       DateTime          @updatedAt
+  created_at       DateTime           @db.DateTime(0)
+  updated_at       DateTime           @updatedAt
+  ManagerNormApply ManagerNormApply[]
   multi_evaluation MultiEvaluation[]
-  business_term    BusinessTerm      @relation(fields: [business_term_id], references: [id])
+  business_term    BusinessTerm       @relation(fields: [business_term_id], references: [id])
 }
 
 model User {
@@ -44,8 +45,8 @@ model MultiEvaluation {
   score               Int
   good_comment        String
   improvement_comment String
-  created_at          DateTime  @default(now())
-  updated_at          DateTime  @updatedAt
+  created_at          DateTime  @default(now()) @db.DateTime(0)
+  updated_at          DateTime  @default(now()) @db.DateTime(0)
   multi_term          MultiTerm @relation(fields: [multi_term_id], references: [id])
 
   @@index([multi_term_id], map: "MultiEvaluation_multi_term_id_fkey")
@@ -69,4 +70,19 @@ model ReportSettingDetail {
   ReportSetting       ReportSetting @relation(fields: [report_setting_id], references: [id], onUpdate: Restrict, map: "fk")
 
   @@index([report_setting_id], map: "fk")
+}
+
+model ManagerNormApply {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id         Int
+  multi_term_id   Int
+  reason          String    @db.Text
+  exemption_count Int
+  apply_status    Int
+  remand_reason   String    @db.Text
+  created_at      DateTime  @default(now()) @db.DateTime(0)
+  updated_at      DateTime  @default(now()) @db.DateTime(0)
+  MultiTerm       MultiTerm @relation(fields: [multi_term_id], references: [id], onUpdate: Restrict, map: "ManagerNormApply_ibfk_1")
+
+  @@index([multi_term_id], map: "multi_term_id")
 }

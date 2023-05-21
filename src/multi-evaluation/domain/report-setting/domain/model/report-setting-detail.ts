@@ -2,18 +2,18 @@ import { PositonLayerType } from '../value-object/positoy-layer-type';
 import { match } from 'ts-pattern';
 
 export class ReportSettingDetail {
-  private reportSettingDetailId: number;
+  private reportSettingDetailId?: number;
   private positionLayerType: PositonLayerType;
   private inputFlg: boolean;
   private theme: string;
   private charaNum: number;
 
   public constructor(
-    reportSettingDetailId: number,
     positionLayerType: PositonLayerType,
     inputFlg: boolean,
     theme: string,
     charaNum: number,
+    reportSettingDetailId?: number,
   ) {
     this.reportSettingDetailId = reportSettingDetailId;
     this.positionLayerType = positionLayerType;
