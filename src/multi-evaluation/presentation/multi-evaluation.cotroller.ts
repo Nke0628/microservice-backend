@@ -5,6 +5,8 @@ import {
   FetchByTermIdAndUserIdResponse,
   FetchMultiTermAllRequest,
   FetchMultiTermAllResponse,
+  FetchReportSettingsByTermIdRequest,
+  FetchReportSettingsByTermIdResponse,
   FetchUsersByIdsRequest,
   FetchUsersByIdsResponse,
   FindUserByIdRequest,
@@ -17,6 +19,7 @@ import { MultiEvaluation } from '../domain/multi-evaluation/model/multi-evaluati
 import { MultiEvaluationRepository } from '../domain/multi-evaluation/infrastructure/multi-evaluation.repository';
 import { MultiTermRepository } from '../domain/multi-term/infrastructure/multi-term.respository';
 import { UserRepository } from '../domain/user/infrastructure/user.repository';
+import { ReportSettingRepository } from '../domain/report-setting/domain/infrastructure/report-setting.repository';
 
 @Controller('')
 export class MultiEvaluationController
@@ -26,7 +29,37 @@ export class MultiEvaluationController
     private readonly userRepository: UserRepository,
     private readonly multiTermRepository: MultiTermRepository,
     private readonly multiEvaluationRepository: MultiEvaluationRepository,
+    private readonly reportSettingRepository: ReportSettingRepository,
   ) {}
+
+  @GrpcMethod('MultiEvaluationService')
+  async fetchReportSettingsByTermId(
+    request: FetchReportSettingsByTermIdRequest,
+  ): Promise<FetchReportSettingsByTermIdResponse> {
+    const reportSetting = await this.reportSettingRepository.fetchByTermId(
+      request.termId,
+    );
+    return {
+      data: {
+        reportSettingId: reportSetting.getReportSettingId,
+        saveUserId: reportSetting.getSaveUserId,
+        savedAt: reportSetting.getFormattedSavedAt('YYYY-MM-DD HH:MM:ss'),
+        reportSettingDetails: reportSetting.getReportSettingList.map(
+          (reportSettingDetail) => {
+            return {
+              reportSettingDetailId:
+                reportSettingDetail.getReportSettingDetailId,
+              positionLayerType: reportSettingDetail.getPositionLayerType(),
+              positionLayerName: reportSettingDetail.getPositionLayerName(),
+              inputFlg: reportSettingDetail.getInputFlg,
+              theme: reportSettingDetail.getTheme,
+              charaNum: reportSettingDetail.getCharaNum,
+            };
+          },
+        ),
+      },
+    };
+  }
 
   // ユーザ情報取得
   @GrpcMethod('MultiEvaluationService')

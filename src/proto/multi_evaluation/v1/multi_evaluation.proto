@@ -13,6 +13,33 @@ service MultiEvaluationService {
     // User
     rpc FindUserById(FindUserByIdRequest)returns(FindUserByIdResponse){}
     rpc FetchUsersByIds(FetchUsersByIdsRequest)returns(FetchUsersByIdsResponse){}
+
+    // ReportSetting
+    rpc FetchReportSettingsByTermId(FetchReportSettingsByTermIdRequest)returns(FetchReportSettingsByTermIdResponse){}
+}
+
+message FetchReportSettingsByTermIdRequest{
+    int32 term_id = 1;
+}
+
+message ReportSetting{
+    int32 report_setting_id = 1;
+    int32 save_user_id = 2;
+    string saved_at = 3;
+    repeated ReportSettingDetail reportSettingDetails = 4;
+}
+
+message ReportSettingDetail{
+    int32 report_setting_detail_id = 1;
+    string position_layer_name = 2;
+    int32 position_layer_type = 3;
+    bool input_flg = 4;
+    string theme = 5;
+    int32 chara_num = 6;
+}
+
+message FetchReportSettingsByTermIdResponse{
+    ReportSetting data = 1;
 }
 
 message MultiTerm{

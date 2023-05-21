@@ -4,6 +4,30 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "multi_evaluation.v1";
 
+export interface FetchReportSettingsByTermIdRequest {
+  termId: number;
+}
+
+export interface ReportSetting {
+  reportSettingId: number;
+  saveUserId: number;
+  savedAt: string;
+  reportSettingDetails: ReportSettingDetail[];
+}
+
+export interface ReportSettingDetail {
+  reportSettingDetailId: number;
+  positionLayerName: string;
+  positionLayerType: number;
+  inputFlg: boolean;
+  theme: string;
+  charaNum: number;
+}
+
+export interface FetchReportSettingsByTermIdResponse {
+  data: ReportSetting | undefined;
+}
+
 export interface MultiTerm {
   id: number;
   businessTermName: string;
@@ -94,6 +118,12 @@ export interface MultiEvaluationServiceClient {
   findUserById(request: FindUserByIdRequest): Observable<FindUserByIdResponse>;
 
   fetchUsersByIds(request: FetchUsersByIdsRequest): Observable<FetchUsersByIdsResponse>;
+
+  /** ReportSetting */
+
+  fetchReportSettingsByTermId(
+    request: FetchReportSettingsByTermIdRequest,
+  ): Observable<FetchReportSettingsByTermIdResponse>;
 }
 
 export interface MultiEvaluationServiceController {
@@ -125,6 +155,15 @@ export interface MultiEvaluationServiceController {
   fetchUsersByIds(
     request: FetchUsersByIdsRequest,
   ): Promise<FetchUsersByIdsResponse> | Observable<FetchUsersByIdsResponse> | FetchUsersByIdsResponse;
+
+  /** ReportSetting */
+
+  fetchReportSettingsByTermId(
+    request: FetchReportSettingsByTermIdRequest,
+  ):
+    | Promise<FetchReportSettingsByTermIdResponse>
+    | Observable<FetchReportSettingsByTermIdResponse>
+    | FetchReportSettingsByTermIdResponse;
 }
 
 export function MultiEvaluationServiceControllerMethods() {
@@ -135,6 +174,7 @@ export function MultiEvaluationServiceControllerMethods() {
       "submitMultiEvaluation",
       "findUserById",
       "fetchUsersByIds",
+      "fetchReportSettingsByTermId",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -12,40 +9,64 @@ datasource db {
 }
 
 model BusinessTerm {
-  id Int @id
-  term_name String
+  id         Int        @id
+  term_name  String
   start_date DateTime
-  end_date DateTime
-  MultiTerm MultiTerm?
+  end_date   DateTime
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  MultiTerm  MultiTerm?
+}
+
+model MultiTerm {
+  id               Int               @id
+  business_term_id Int               @unique
+  start_date       DateTime
+  end_date         DateTime
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @updatedAt
+  multi_evaluation MultiEvaluation[]
+  business_term    BusinessTerm      @relation(fields: [business_term_id], references: [id])
+}
+
+model User {
+  id         Int      @id
+  name       String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
 
-model MultiTerm {
-  id Int @id
-  business_term BusinessTerm @relation(fields: [business_term_id],references: [id])
-  business_term_id Int @unique
-  start_date DateTime
-  end_date DateTime
-  multi_evaluation MultiEvaluation[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-}
-model User {
-  id Int @id
-  name String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-}
 model MultiEvaluation {
-  id Int @id @default(autoincrement())
-  user_id Int
-  target_user_id Int
-  multi_term MultiTerm @relation(fields: [multi_term_id],references: [id])
-  multi_term_id Int
-  score Int
-  good_comment String
+  id                  Int       @id @default(autoincrement())
+  user_id             Int
+  target_user_id      Int
+  multi_term_id       Int
+  score               Int
+  good_comment        String
   improvement_comment String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @updatedAt
+  multi_term          MultiTerm @relation(fields: [multi_term_id], references: [id])
+
+  @@index([multi_term_id], map: "MultiEvaluation_multi_term_id_fkey")
+}
+
+model ReportSetting {
+  id                  Int                   @id @default(autoincrement())
+  term_id             Int
+  save_user_id        Int
+  saved_at            DateTime              @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  ReportSettingDetail ReportSettingDetail[]
+}
+
+model ReportSettingDetail {
+  id                  Int           @id @default(autoincrement())
+  report_setting_id   Int
+  postioin_layer_type Int           @db.TinyInt
+  input_flg           Boolean
+  theme               String        @db.VarChar(100)
+  chara_num           Int?
+  ReportSetting       ReportSetting @relation(fields: [report_setting_id], references: [id], onUpdate: Restrict, map: "fk")
+
+  @@index([report_setting_id], map: "fk")
 }
