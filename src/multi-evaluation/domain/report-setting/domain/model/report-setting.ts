@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { PositonLayerType } from '../value-object/positoy-layer-type';
+import { Layer } from '../value-object/layer';
 import { ReportSettingDetail } from './report-setting-detail';
 
 export class ReportSetting {
@@ -42,11 +42,9 @@ export class ReportSetting {
   }
 
   static initialCreate(): ReportSetting {
-    const positionLayerTypeList = Object.values(PositonLayerType).filter(
-      (v) => !isNaN(Number(v)),
-    );
-    const reportSettingDetails = positionLayerTypeList.map((value) => {
-      return new ReportSettingDetail(Number(value), false, '', 0, 0);
+    const positionLayerTypeList = Layer.getLayerList();
+    const reportSettingDetails = positionLayerTypeList.map((layer) => {
+      return new ReportSettingDetail(layer, false, '', 0, 0);
     });
     return new ReportSetting(0, new Date(), reportSettingDetails, 0);
   }

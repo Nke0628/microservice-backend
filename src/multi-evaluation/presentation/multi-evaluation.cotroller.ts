@@ -25,6 +25,7 @@ import { MultiTermRepository } from '../domain/multi-term/infrastructure/multi-t
 import { UserRepository } from '../domain/user/infrastructure/user.repository';
 import { ReportSettingRepository } from '../domain/report-setting/domain/infrastructure/report-setting.repository';
 import { FindManagerNormaApplyByUserIdAndMultiTermIdUseCase } from '../usecase/find-manager-norma-apply.usecase';
+import { ReportSetting } from '../domain/report-setting/domain/model/report-setting';
 
 @Controller('')
 export class MultiEvaluationController
@@ -70,9 +71,12 @@ export class MultiEvaluationController
   async fetchReportSettingsByTermId(
     request: FetchReportSettingsByTermIdRequest,
   ): Promise<FetchReportSettingsByTermIdResponse> {
-    const reportSetting = await this.reportSettingRepository.fetchByTermId(
+    let reportSetting = await this.reportSettingRepository.fetchByTermId(
       request.termId,
     );
+    if (!reportSetting) {
+      reportSetting = ReportSetting.initialCreate();
+    }
     return {
       data: {
         reportSettingId: reportSetting.getReportSettingId,
@@ -83,8 +87,10 @@ export class MultiEvaluationController
             return {
               reportSettingDetailId:
                 reportSettingDetail.getReportSettingDetailId,
-              positionLayerType: reportSettingDetail.getPositionLayerType(),
-              positionLayerName: reportSettingDetail.getPositionLayerName(),
+              positionLayerType:
+                reportSettingDetail.getPositionLayerType().getCode,
+              positionLayerName:
+                reportSettingDetail.getPositionLayerType().getName,
               inputFlg: reportSettingDetail.getInputFlg,
               theme: reportSettingDetail.getTheme,
               charaNum: reportSettingDetail.getCharaNum,

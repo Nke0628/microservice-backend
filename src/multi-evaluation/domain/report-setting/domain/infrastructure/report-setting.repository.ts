@@ -1,18 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prsima.service';
-import { Prisma } from '@prisma/client';
 import { ReportSetting } from '../model/report-setting';
 import { ReportSettingMapper } from '../mapper/report-setting.mapper';
-
-export type ReportSettingWithDetailEntitiy = Prisma.ReportSettingGetPayload<{
-  include: { ReportSettingDetail: true };
-}>;
 
 @Injectable()
 export class ReportSettingRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async fetchByTermId(termId: number): Promise<ReportSetting> {
+  async fetchByTermId(termId: number): Promise<ReportSetting | null> {
     const reportSettingwithDetailEntities =
       await this.prismaService.reportSetting.findFirst({
         where: {
@@ -22,8 +17,8 @@ export class ReportSettingRepository {
           ReportSettingDetail: true,
         },
       });
-    if (reportSettingwithDetailEntities === null) {
-      return ReportSetting.initialCreate();
+    if (!reportSettingwithDetailEntities) {
+      return null;
     }
     return ReportSettingMapper.toDomainList(reportSettingwithDetailEntities);
   }

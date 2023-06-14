@@ -1,15 +1,14 @@
-import { PositonLayerType } from '../value-object/positoy-layer-type';
-import { match } from 'ts-pattern';
+import { Layer } from '../value-object/layer';
 
 export class ReportSettingDetail {
   private reportSettingDetailId?: number;
-  private positionLayerType: PositonLayerType;
+  private positionLayerType: Layer;
   private inputFlg: boolean;
   private theme: string;
   private charaNum: number;
 
   public constructor(
-    positionLayerType: PositonLayerType,
+    positionLayerType: Layer,
     inputFlg: boolean,
     theme: string,
     charaNum: number,
@@ -26,19 +25,7 @@ export class ReportSettingDetail {
     return this.reportSettingDetailId;
   }
 
-  getPositionLayerName(): string {
-    return match(this.positionLayerType)
-      .with(PositonLayerType.SECTION, () => 'セクション')
-      .with(PositonLayerType.EGG_ASSISTANT, () => 'EGGアシスタント')
-      .with(PositonLayerType.EGG_GENERAL, () => 'EGG一般')
-      .with(PositonLayerType.GENERAL, () => '一般')
-      .with(PositonLayerType.LEADER, () => 'リーダー')
-      .with(PositonLayerType.SUB_CHIEF, () => 'サブチーフ')
-      .with(PositonLayerType.CHIEF, () => 'チーフ')
-      .otherwise(() => '');
-  }
-
-  getPositionLayerType(): number {
+  getPositionLayerType(): Layer {
     return this.positionLayerType;
   }
 
