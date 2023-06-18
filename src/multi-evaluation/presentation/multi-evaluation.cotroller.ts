@@ -26,6 +26,7 @@ import { UserRepository } from '../domain/user/infrastructure/user.repository';
 import { ReportSettingRepository } from '../domain/report-setting/domain/infrastructure/report-setting.repository';
 import { FindManagerNormaApplyByUserIdAndMultiTermIdUseCase } from '../usecase/find-manager-norma-apply.usecase';
 import { ReportSetting } from '../domain/report-setting/domain/model/report-setting';
+import { Observable } from 'rxjs';
 
 @Controller('')
 export class MultiEvaluationController
@@ -38,6 +39,14 @@ export class MultiEvaluationController
     private readonly reportSettingRepository: ReportSettingRepository,
     private readonly findManagerNormaApplyByUserIdAndMultiTermIdUseCase: FindManagerNormaApplyByUserIdAndMultiTermIdUseCase,
   ) {}
+  findManagerNormaApplyByUserIdAndTermId(
+    request: FindManagerNormaApplyRequest,
+  ):
+    | FindManagerNormaApplyResponse
+    | Promise<FindManagerNormaApplyResponse>
+    | Observable<FindManagerNormaApplyResponse> {
+    throw new Error('Method not implemented.');
+  }
 
   /**
    * 管理職ノルマ免除申請取得
@@ -87,8 +96,9 @@ export class MultiEvaluationController
             return {
               reportSettingDetailId:
                 reportSettingDetail.getReportSettingDetailId,
-              positionLayerType:
-                reportSettingDetail.getPositionLayerType().getCode,
+              positionLayerType: reportSettingDetail
+                .getPositionLayerType()
+                .toProto(),
               positionLayerName:
                 reportSettingDetail.getPositionLayerType().getName,
               inputFlg: reportSettingDetail.getInputFlg,

@@ -2,14 +2,14 @@ import { ReportSettingDetail as ReportSettingDetailEntity } from '@prisma/client
 import { ReportSettingWithDetailEntitiy } from '../infrastructure/report-setting.type';
 import { ReportSettingDetail } from '../model/report-setting-detail';
 import { ReportSetting } from '../model/report-setting';
-import { Layer } from '../value-object/layer';
+import { PositionLayerType } from '../value-object/position-layer-type';
 
 export class ReportSettingMapper {
   public static toDomain(
     ReportSettingDetailEntity: ReportSettingDetailEntity,
   ): ReportSettingDetail {
     return new ReportSettingDetail(
-      Layer.fromCode(ReportSettingDetailEntity.postioin_layer_type),
+      PositionLayerType.fromCode(ReportSettingDetailEntity.postioin_layer_type),
       ReportSettingDetailEntity.input_flg,
       ReportSettingDetailEntity.theme,
       ReportSettingDetailEntity.chara_num,

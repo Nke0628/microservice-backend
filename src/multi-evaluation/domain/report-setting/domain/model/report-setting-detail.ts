@@ -1,21 +1,21 @@
-import { Layer } from '../value-object/layer';
+import { PositionLayerType } from '../value-object/position-layer-type';
 
 export class ReportSettingDetail {
   private reportSettingDetailId?: number;
-  private positionLayerType: Layer;
+  private positionPositionLayerTypeType: PositionLayerType;
   private inputFlg: boolean;
   private theme: string;
   private charaNum: number;
 
   public constructor(
-    positionLayerType: Layer,
+    positionPositionLayerTypeType: PositionLayerType,
     inputFlg: boolean,
     theme: string,
     charaNum: number,
     reportSettingDetailId?: number,
   ) {
     this.reportSettingDetailId = reportSettingDetailId;
-    this.positionLayerType = positionLayerType;
+    this.positionPositionLayerTypeType = positionPositionLayerTypeType;
     this.inputFlg = inputFlg;
     this.theme = theme;
     this.charaNum = charaNum;
@@ -25,8 +25,8 @@ export class ReportSettingDetail {
     return this.reportSettingDetailId;
   }
 
-  getPositionLayerType(): Layer {
-    return this.positionLayerType;
+  getPositionLayerType(): PositionLayerType {
+    return this.positionPositionLayerTypeType;
   }
 
   get getInputFlg(): boolean {

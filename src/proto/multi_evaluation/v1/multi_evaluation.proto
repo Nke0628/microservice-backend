@@ -69,10 +69,19 @@ message ReportSetting{
     repeated ReportSettingDetail reportSettingDetails = 4;
 }
 
+enum PositionLayerType{
+    SECTION = 0;
+    EGG_ASISTANT = 1;
+    EGG_GENERAL = 2;
+    GENERAL = 3;
+    LEADER = 4;
+    SUB_CHEIF = 5;
+}
+
 message ReportSettingDetail{
     int32 report_setting_detail_id = 1;
     string position_layer_name = 2;
-    int32 position_layer_type = 3;
+    PositionLayerType position_layer_type = 3;
     bool input_flg = 4;
     string theme = 5;
     int32 chara_num = 6;

@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { Layer } from '../value-object/layer';
+import { PositionLayerType } from '../value-object/position-layer-type';
 import { ReportSettingDetail } from './report-setting-detail';
 
 export class ReportSetting {
@@ -42,7 +42,7 @@ export class ReportSetting {
   }
 
   static initialCreate(): ReportSetting {
-    const positionLayerTypeList = Layer.getLayerList();
+    const positionLayerTypeList = PositionLayerType.getLayerList();
     const reportSettingDetails = positionLayerTypeList.map((layer) => {
       return new ReportSettingDetail(layer, false, '', 0, 0);
     });
