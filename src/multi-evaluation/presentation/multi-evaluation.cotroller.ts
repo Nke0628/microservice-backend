@@ -96,9 +96,8 @@ export class MultiEvaluationController
             return {
               reportSettingDetailId:
                 reportSettingDetail.getReportSettingDetailId,
-              positionLayerType: reportSettingDetail
-                .getPositionLayerType()
-                .toProto(),
+              positionLayerType:
+                reportSettingDetail.getPositionLayerType().getCode,
               positionLayerName:
                 reportSettingDetail.getPositionLayerType().getName,
               inputFlg: reportSettingDetail.getInputFlg,

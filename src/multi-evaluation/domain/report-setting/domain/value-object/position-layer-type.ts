@@ -1,5 +1,3 @@
-import { match } from 'ts-pattern';
-
 type PositionLayerTypeCode = 1 | 2 | 3 | 4 | 5 | 6;
 
 export class PositionLayerType {
@@ -29,17 +27,6 @@ export class PositionLayerType {
 
   get getCode(): number {
     return this.code;
-  }
-
-  toProto(): number {
-    return match(this.code)
-      .with(1, () => 0)
-      .with(2, () => 1)
-      .with(3, () => 2)
-      .with(4, () => 3)
-      .with(5, () => 4)
-      .with(6, () => 5)
-      .exhaustive();
   }
 
   // TODO プロパティから生成したい

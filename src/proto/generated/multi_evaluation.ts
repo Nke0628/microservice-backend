@@ -14,12 +14,13 @@ export enum ApplyStatus {
 }
 
 export enum PositionLayerType {
-  SECTION = 0,
-  EGG_ASISTANT = 1,
-  EGG_GENERAL = 2,
-  GENERAL = 3,
-  LEADER = 4,
-  SUB_CHEIF = 5,
+  UNSPECIFIED = 0,
+  SECTION = 1,
+  EGG_ASISTANT = 2,
+  EGG_GENERAL = 3,
+  GENERAL = 4,
+  LEADER = 5,
+  SUB_CHEIF = 6,
   UNRECOGNIZED = -1,
 }
 
