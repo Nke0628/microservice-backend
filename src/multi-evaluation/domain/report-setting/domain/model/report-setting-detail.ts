@@ -1,3 +1,4 @@
+import { RpcException } from '@nestjs/microservices';
 import { PositionLayerType } from '../value-object/position-layer-type';
 
 export class ReportSettingDetail {
@@ -25,10 +26,6 @@ export class ReportSettingDetail {
     return this.reportSettingDetailId;
   }
 
-  getPositionLayerType(): PositionLayerType {
-    return this.positionPositionLayerTypeType;
-  }
-
   get getInputFlg(): boolean {
     return this.inputFlg;
   }
@@ -39,5 +36,25 @@ export class ReportSettingDetail {
 
   get getCharaNum(): number {
     return this.charaNum;
+  }
+
+  getPositionLayerType(): PositionLayerType {
+    return this.positionPositionLayerTypeType;
+  }
+
+  save(
+    positionLayerType: number,
+    inputFlg: boolean,
+    theme: string,
+    charaNum: number,
+  ): void {
+    if ((inputFlg && !theme) || (inputFlg && !charaNum)) {
+      throw new RpcException('入力有の場合は。テーマと文字数が必須です');
+    }
+    this.positionPositionLayerTypeType =
+      PositionLayerType.fromCode(positionLayerType);
+    this.inputFlg = inputFlg;
+    this.theme = theme;
+    this.charaNum = charaNum;
   }
 }

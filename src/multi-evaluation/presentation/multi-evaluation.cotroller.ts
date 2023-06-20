@@ -16,6 +16,8 @@ import {
   FindUserByIdRequest,
   FindUserByIdResponse,
   MultiEvaluationServiceController,
+  RegisterReportSettingsRequest,
+  RegisterReportSettingsResponse,
   SubmitMultiEvaluationRequest,
   SubmitMultiEvaluationResponse,
 } from 'src/proto/generated/multi_evaluation';
@@ -39,12 +41,42 @@ export class MultiEvaluationController
     private readonly reportSettingRepository: ReportSettingRepository,
     private readonly findManagerNormaApplyByUserIdAndMultiTermIdUseCase: FindManagerNormaApplyByUserIdAndMultiTermIdUseCase,
   ) {}
+
+  @GrpcMethod('MultiEvaluationService')
+  async registerReportSettings(
+    request: RegisterReportSettingsRequest,
+  ): Promise<RegisterReportSettingsResponse> {
+    const reportSetting = ReportSetting.initialCreate(request.termId);
+    reportSetting.sava(request.userId, request.reportSettingDetails);
+    //レポート設定削除
+    //レポート設定作成
+    return {
+      data: {
+        reportSettingId: reportSetting.getReportSettingId,
+        saveUserId: reportSetting.getSaveUserId,
+        savedAt: reportSetting.getFormattedSavedAt('YYYY-MM-DD HH:MM:ss'),
+        reportSettingDetails: reportSetting.getReportSettingList.map(
+          (reportSettingDetail) => {
+            return {
+              reportSettingDetailId:
+                reportSettingDetail.getReportSettingDetailId,
+              positionLayerType:
+                reportSettingDetail.getPositionLayerType().getCode,
+              positionLayerName:
+                reportSettingDetail.getPositionLayerType().getName,
+              inputFlg: reportSettingDetail.getInputFlg,
+              theme: reportSettingDetail.getTheme,
+              charaNum: reportSettingDetail.getCharaNum,
+            };
+          },
+        ),
+      },
+    };
+  }
+
   findManagerNormaApplyByUserIdAndTermId(
     request: FindManagerNormaApplyRequest,
-  ):
-    | FindManagerNormaApplyResponse
-    | Promise<FindManagerNormaApplyResponse>
-    | Observable<FindManagerNormaApplyResponse> {
+  ): Promise<FindManagerNormaApplyResponse> {
     throw new Error('Method not implemented.');
   }
 
@@ -84,7 +116,7 @@ export class MultiEvaluationController
       request.termId,
     );
     if (!reportSetting) {
-      reportSetting = ReportSetting.initialCreate();
+      reportSetting = ReportSetting.initialCreate(request.termId);
     }
     return {
       data: {

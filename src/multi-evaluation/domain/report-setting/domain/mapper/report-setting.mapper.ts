@@ -27,6 +27,7 @@ export class ReportSettingMapper {
         },
       );
     return new ReportSetting(
+      reportSettingWithDetailEntity.term_id,
       reportSettingWithDetailEntity.save_user_id,
       reportSettingWithDetailEntity.saved_at,
       reportSettingList,

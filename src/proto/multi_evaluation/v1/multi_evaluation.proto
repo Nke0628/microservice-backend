@@ -20,6 +20,7 @@ service MultiEvaluationService {
 
     // ReportSetting
     rpc FetchReportSettingsByTermId(FetchReportSettingsByTermIdRequest)returns(FetchReportSettingsByTermIdResponse){}
+    rpc RegisterReportSettings(RegisterReportSettingsRequest)returns(RegisterReportSettingsResponse){}
 }
 
 message FindManagerNormaApplyRequest{
@@ -89,6 +90,16 @@ message ReportSettingDetail{
 }
 
 message FetchReportSettingsByTermIdResponse{
+    ReportSetting data = 1;
+}
+
+message RegisterReportSettingsRequest {
+    int32 user_id = 1;
+    int32 term_id = 2;
+    repeated ReportSettingDetail reportSettingDetails = 3;
+}
+
+message RegisterReportSettingsResponse{
     ReportSetting data = 1;
 }
 

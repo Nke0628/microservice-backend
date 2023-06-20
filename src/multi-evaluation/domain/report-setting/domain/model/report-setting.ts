@@ -4,20 +4,23 @@ import { ReportSettingDetail } from './report-setting-detail';
 
 export class ReportSetting {
   private reportSettingId?: number;
+  private termId: number;
   private saveUserId: number;
   private savedAt: Date;
-  private reportSetiingList: ReportSettingDetail[];
+  private reportSettingDetails: ReportSettingDetail[];
 
   public constructor(
+    termId: number,
     saveUserId: number,
     savedAt: Date,
-    reportSetting: ReportSettingDetail[],
+    reportSettingDetails: ReportSettingDetail[],
     reportSettingId?: number,
   ) {
     this.reportSettingId = reportSettingId;
+    this.termId = termId;
     this.saveUserId = saveUserId;
     this.savedAt = savedAt;
-    this.reportSetiingList = reportSetting;
+    this.reportSettingDetails = reportSettingDetails;
   }
 
   get getReportSettingId(): number {
@@ -33,7 +36,7 @@ export class ReportSetting {
   }
 
   get getReportSettingList(): ReportSettingDetail[] {
-    return this.reportSetiingList;
+    return this.reportSettingDetails;
   }
 
   getFormattedSavedAt(format: string): string {
@@ -41,11 +44,39 @@ export class ReportSetting {
     return targetDay.format(format);
   }
 
-  static initialCreate(): ReportSetting {
+  sava(
+    saveUserId: number,
+    inputReportSettingDetails: {
+      positionLayerType: number;
+      inputFlg: boolean;
+      theme: string;
+      charaNum: number;
+    }[],
+  ): void {
+    this.saveUserId = saveUserId;
+    this.savedAt = new Date();
+    this.reportSettingDetails.map((reportSettingDetail) => {
+      const inputReportSettingDetail = inputReportSettingDetails.find(
+        (inputReportSettingDetail) =>
+          inputReportSettingDetail.positionLayerType.valueOf() ===
+          reportSettingDetail.getPositionLayerType().code,
+      );
+      if (inputReportSettingDetail) {
+        reportSettingDetail.save(
+          inputReportSettingDetail.positionLayerType,
+          inputReportSettingDetail.inputFlg,
+          inputReportSettingDetail.theme,
+          inputReportSettingDetail.charaNum,
+        );
+      }
+    });
+  }
+
+  static initialCreate(termId: number): ReportSetting {
     const positionLayerTypeList = PositionLayerType.getLayerList();
     const reportSettingDetails = positionLayerTypeList.map((layer) => {
       return new ReportSettingDetail(layer, false, '', 0, 0);
     });
-    return new ReportSetting(0, new Date(), reportSettingDetails, 0);
+    return new ReportSetting(termId, 0, new Date(), reportSettingDetails, 0);
   }
 }
