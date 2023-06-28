@@ -7,11 +7,13 @@ import { MultiEvaluationController } from './presentation/multi-evaluation.cotro
 import { ReportSettingRepository } from './domain/report-setting/domain/infrastructure/report-setting.repository';
 import { ManagerNormaApplyRepository } from './domain/norma-apply/infrastructure/manager-norma-apply.repository';
 import { FindManagerNormaApplyByUserIdAndMultiTermIdUseCase } from './usecase/find-manager-norma-apply.usecase';
+import { SaveReportSettingUseCase } from './usecase/save-report-setting.usecase';
 
 @Module({
   imports: [PrismaModule],
   controllers: [MultiEvaluationController],
   providers: [
+    SaveReportSettingUseCase,
     FindManagerNormaApplyByUserIdAndMultiTermIdUseCase,
     UserRepository,
     MultiTermRepository,

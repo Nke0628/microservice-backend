@@ -54,7 +54,7 @@ model MultiEvaluation {
 
 model ReportSetting {
   id                  Int                   @id @default(autoincrement())
-  term_id             Int
+  term_id             Int                   @unique(map: "UNIQUE_KEY_TERM_ID")
   save_user_id        Int
   saved_at            DateTime              @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
   ReportSettingDetail ReportSettingDetail[]

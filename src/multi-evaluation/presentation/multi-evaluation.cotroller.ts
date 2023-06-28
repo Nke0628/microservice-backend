@@ -29,6 +29,8 @@ import { ReportSettingRepository } from '../domain/report-setting/domain/infrast
 import { FindManagerNormaApplyByUserIdAndMultiTermIdUseCase } from '../usecase/find-manager-norma-apply.usecase';
 import { ReportSetting } from '../domain/report-setting/domain/model/report-setting';
 import { Observable } from 'rxjs';
+import { Optional } from 'typescript-optional';
+import { SaveReportSettingUseCase } from '../usecase/save-report-setting.usecase';
 
 @Controller('')
 export class MultiEvaluationController
@@ -39,6 +41,7 @@ export class MultiEvaluationController
     private readonly multiTermRepository: MultiTermRepository,
     private readonly multiEvaluationRepository: MultiEvaluationRepository,
     private readonly reportSettingRepository: ReportSettingRepository,
+    private readonly saveReportSettingUseCase: SaveReportSettingUseCase,
     private readonly findManagerNormaApplyByUserIdAndMultiTermIdUseCase: FindManagerNormaApplyByUserIdAndMultiTermIdUseCase,
   ) {}
 
@@ -46,10 +49,7 @@ export class MultiEvaluationController
   async registerReportSettings(
     request: RegisterReportSettingsRequest,
   ): Promise<RegisterReportSettingsResponse> {
-    const reportSetting = ReportSetting.initialCreate(request.termId);
-    reportSetting.sava(request.userId, request.reportSettingDetails);
-    //レポート設定削除
-    //レポート設定作成
+    const reportSetting = await this.saveReportSettingUseCase.execute(request);
     return {
       data: {
         reportSettingId: reportSetting.getReportSettingId,

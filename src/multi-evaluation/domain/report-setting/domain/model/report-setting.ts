@@ -1,4 +1,5 @@
 import * as dayjs from 'dayjs';
+import { PositionLayerType as PositionLayerTypeProto } from 'src/proto/generated/multi_evaluation';
 import { PositionLayerType } from '../value-object/position-layer-type';
 import { ReportSettingDetail } from './report-setting-detail';
 
@@ -27,6 +28,10 @@ export class ReportSetting {
     return this.reportSettingId;
   }
 
+  get getTermId(): number {
+    return this.termId;
+  }
+
   get getSaveUserId(): number {
     return this.saveUserId;
   }
@@ -44,34 +49,39 @@ export class ReportSetting {
     return targetDay.format(format);
   }
 
+  // レポート設定保存
   sava(
-    saveUserId: number,
+    inputSaveUserId: number,
     inputReportSettingDetails: {
-      positionLayerType: number;
+      positionLayerType: PositionLayerTypeProto;
       inputFlg: boolean;
       theme: string;
       charaNum: number;
     }[],
   ): void {
-    this.saveUserId = saveUserId;
-    this.savedAt = new Date();
-    this.reportSettingDetails.map((reportSettingDetail) => {
-      const inputReportSettingDetail = inputReportSettingDetails.find(
-        (inputReportSettingDetail) =>
-          inputReportSettingDetail.positionLayerType.valueOf() ===
-          reportSettingDetail.getPositionLayerType().code,
+    // 対象役職層のレポート設定の特定
+    inputReportSettingDetails.map((inputReportSettingDetail) => {
+      const reportSettingDetail = this.reportSettingDetails.find(
+        (reportSettingDetail) =>
+          inputReportSettingDetail.positionLayerType ===
+          reportSettingDetail.getPositionLayerType().getCode,
       );
-      if (inputReportSettingDetail) {
-        reportSettingDetail.save(
-          inputReportSettingDetail.positionLayerType,
-          inputReportSettingDetail.inputFlg,
-          inputReportSettingDetail.theme,
-          inputReportSettingDetail.charaNum,
-        );
-      }
+
+      // 役職層単位で更新
+      reportSettingDetail.save(
+        inputReportSettingDetail.positionLayerType,
+        inputReportSettingDetail.inputFlg,
+        inputReportSettingDetail.theme,
+        inputReportSettingDetail.charaNum,
+      );
+
+      // レポート設定全体の値更新
+      this.saveUserId = inputSaveUserId;
+      this.savedAt = new Date();
     });
   }
 
+  // レポート設定初期生成
   static initialCreate(termId: number): ReportSetting {
     const positionLayerTypeList = PositionLayerType.getLayerList();
     const reportSettingDetails = positionLayerTypeList.map((layer) => {

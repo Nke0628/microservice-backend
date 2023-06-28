@@ -42,6 +42,7 @@ export class ReportSettingDetail {
     return this.positionPositionLayerTypeType;
   }
 
+  // レポート詳細保存
   save(
     positionLayerType: number,
     inputFlg: boolean,
