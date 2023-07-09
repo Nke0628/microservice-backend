@@ -93,10 +93,17 @@ message FetchReportSettingsByTermIdResponse{
     ReportSetting data = 1;
 }
 
+message RegisterReportSettingDetail{
+    PositionLayerType position_layer_type = 1;
+    bool input_flg = 2;
+    string theme = 3;
+    int32 chara_num = 4;
+}
+
 message RegisterReportSettingsRequest {
     int32 user_id = 1;
     int32 term_id = 2;
-    repeated ReportSettingDetail reportSettingDetails = 3;
+    repeated RegisterReportSettingDetail reportSettingDetails = 3;
 }
 
 message RegisterReportSettingsResponse{

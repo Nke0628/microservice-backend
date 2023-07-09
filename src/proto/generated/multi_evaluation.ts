@@ -75,10 +75,17 @@ export interface FetchReportSettingsByTermIdResponse {
   data: ReportSetting | undefined;
 }
 
+export interface RegisterReportSettingDetail {
+  positionLayerType: PositionLayerType;
+  inputFlg: boolean;
+  theme: string;
+  charaNum: number;
+}
+
 export interface RegisterReportSettingsRequest {
   userId: number;
   termId: number;
-  reportSettingDetails: ReportSettingDetail[];
+  reportSettingDetails: RegisterReportSettingDetail[];
 }
 
 export interface RegisterReportSettingsResponse {

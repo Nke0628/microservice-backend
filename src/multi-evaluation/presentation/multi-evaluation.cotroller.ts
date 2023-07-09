@@ -45,35 +45,6 @@ export class MultiEvaluationController
     private readonly findManagerNormaApplyByUserIdAndMultiTermIdUseCase: FindManagerNormaApplyByUserIdAndMultiTermIdUseCase,
   ) {}
 
-  @GrpcMethod('MultiEvaluationService')
-  async registerReportSettings(
-    request: RegisterReportSettingsRequest,
-  ): Promise<RegisterReportSettingsResponse> {
-    const reportSetting = await this.saveReportSettingUseCase.execute(request);
-    return {
-      data: {
-        reportSettingId: reportSetting.getReportSettingId,
-        saveUserId: reportSetting.getSaveUserId,
-        savedAt: reportSetting.getFormattedSavedAt('YYYY-MM-DD HH:MM:ss'),
-        reportSettingDetails: reportSetting.getReportSettingList.map(
-          (reportSettingDetail) => {
-            return {
-              reportSettingDetailId:
-                reportSettingDetail.getReportSettingDetailId,
-              positionLayerType:
-                reportSettingDetail.getPositionLayerType().getCode,
-              positionLayerName:
-                reportSettingDetail.getPositionLayerType().getName,
-              inputFlg: reportSettingDetail.getInputFlg,
-              theme: reportSettingDetail.getTheme,
-              charaNum: reportSettingDetail.getCharaNum,
-            };
-          },
-        ),
-      },
-    };
-  }
-
   findManagerNormaApplyByUserIdAndTermId(
     request: FindManagerNormaApplyRequest,
   ): Promise<FindManagerNormaApplyResponse> {
@@ -118,6 +89,35 @@ export class MultiEvaluationController
     if (!reportSetting) {
       reportSetting = ReportSetting.initialCreate(request.termId);
     }
+    return {
+      data: {
+        reportSettingId: reportSetting.getReportSettingId,
+        saveUserId: reportSetting.getSaveUserId,
+        savedAt: reportSetting.getFormattedSavedAt('YYYY-MM-DD HH:MM:ss'),
+        reportSettingDetails: reportSetting.getReportSettingList.map(
+          (reportSettingDetail) => {
+            return {
+              reportSettingDetailId:
+                reportSettingDetail.getReportSettingDetailId,
+              positionLayerType:
+                reportSettingDetail.getPositionLayerType().getCode,
+              positionLayerName:
+                reportSettingDetail.getPositionLayerType().getName,
+              inputFlg: reportSettingDetail.getInputFlg,
+              theme: reportSettingDetail.getTheme,
+              charaNum: reportSettingDetail.getCharaNum,
+            };
+          },
+        ),
+      },
+    };
+  }
+
+  @GrpcMethod('MultiEvaluationService')
+  async registerReportSettings(
+    request: RegisterReportSettingsRequest,
+  ): Promise<RegisterReportSettingsResponse> {
+    const reportSetting = await this.saveReportSettingUseCase.execute(request);
     return {
       data: {
         reportSettingId: reportSetting.getReportSettingId,
