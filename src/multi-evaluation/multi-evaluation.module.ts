@@ -8,6 +8,7 @@ import { ReportSettingRepository } from './domain/report-setting/domain/infrastr
 import { ManagerNormaApplyRepository } from './domain/norma-apply/infrastructure/manager-norma-apply.repository';
 import { FindManagerNormaApplyByUserIdAndMultiTermIdUseCase } from './usecase/find-manager-norma-apply.usecase';
 import { SaveReportSettingUseCase } from './usecase/save-report-setting.usecase';
+import { SearchMultiEvaluationUseCase } from './usecase/search-multi-evaluation.usecase';
 
 @Module({
   imports: [PrismaModule],
@@ -15,6 +16,7 @@ import { SaveReportSettingUseCase } from './usecase/save-report-setting.usecase'
   providers: [
     SaveReportSettingUseCase,
     FindManagerNormaApplyByUserIdAndMultiTermIdUseCase,
+    SearchMultiEvaluationUseCase,
     UserRepository,
     MultiTermRepository,
     MultiEvaluationRepository,

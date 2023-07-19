@@ -164,6 +164,20 @@ export interface FetchUsersByIdsResponse {
   data: User[];
 }
 
+/** 評価検索リクエスト */
+export interface SearchMultiEvaluationRequest {
+  termId: number;
+  userId: number;
+  limit: number;
+  page: number;
+}
+
+/** 評価検索レスポンス */
+export interface SearchMultiEvaluationResponse {
+  totalCount: number;
+  data: MultiEvaluation[];
+}
+
 export const MULTI_EVALUATION_V1_PACKAGE_NAME = 'multi_evaluation.v1';
 
 export interface MultiEvaluationServiceClient {
@@ -182,6 +196,10 @@ export interface MultiEvaluationServiceClient {
   fetchByTermIdAndUserId(
     request: FetchByTermIdAndUserIdRequst,
   ): Observable<FetchByTermIdAndUserIdResponse>;
+
+  searchMultiEvaluation(
+    request: SearchMultiEvaluationRequest,
+  ): Observable<SearchMultiEvaluationResponse>;
 
   submitMultiEvaluation(
     request: SubmitMultiEvaluationRequest,
@@ -238,6 +256,13 @@ export interface MultiEvaluationServiceController {
     | Observable<FetchByTermIdAndUserIdResponse>
     | FetchByTermIdAndUserIdResponse;
 
+  searchMultiEvaluation(
+    request: SearchMultiEvaluationRequest,
+  ):
+    | Promise<SearchMultiEvaluationResponse>
+    | Observable<SearchMultiEvaluationResponse>
+    | SearchMultiEvaluationResponse;
+
   submitMultiEvaluation(
     request: SubmitMultiEvaluationRequest,
   ):
@@ -293,6 +318,7 @@ export function MultiEvaluationServiceControllerMethods() {
       'fetchMultiTermAll',
       'findMultiEvaluationById',
       'fetchByTermIdAndUserId',
+      'searchMultiEvaluation',
       'submitMultiEvaluation',
       'findUserById',
       'fetchUsersByIds',

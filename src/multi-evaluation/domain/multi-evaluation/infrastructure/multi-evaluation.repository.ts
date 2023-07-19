@@ -4,6 +4,7 @@ import { MultiEvaluation } from '../model/multi-evaluation';
 import { MultiEvaluationList } from '../model/multi-evaluation-list';
 import { MultiEvaluationMapper } from '../mapper/mulit-evaluation.mapper';
 import { Optional } from 'typescript-optional';
+import { MultiEvaluationSearchCondition } from 'src/multi-evaluation/presentation/search-condition/multi-evaluation-search-condition';
 
 @Injectable()
 export class MultiEvaluationRepository {
@@ -49,5 +50,29 @@ export class MultiEvaluationRepository {
         },
       });
     return MultiEvaluationMapper.toDomainList(multiEvaluationModel);
+  }
+
+  async search(
+    searchCondition: MultiEvaluationSearchCondition,
+  ): Promise<[MultiEvaluationList, number]> {
+    const where = {
+      multi_term_id: searchCondition.getTermId,
+      user_id: searchCondition.getUserId,
+    };
+    const multiEvaluationModel =
+      await this.prismaService.multiEvaluation.findMany({
+        where,
+        take: searchCondition.getLimit,
+        skip: searchCondition.getOffset(),
+      });
+    const multiEvaluationCount = await this.prismaService.multiEvaluation.count(
+      {
+        where,
+      },
+    );
+    return [
+      MultiEvaluationMapper.toDomainList(multiEvaluationModel),
+      multiEvaluationCount,
+    ];
   }
 }

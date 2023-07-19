@@ -9,6 +9,7 @@ service MultiEvaluationService {
     // MultiEvaluation
     rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequst)returns(FindMultiEvaluationByIdResponse){}
     rpc FetchByTermIdAndUserId(FetchByTermIdAndUserIdRequst)returns(FetchByTermIdAndUserIdResponse){}
+    rpc SearchMultiEvaluation(SearchMultiEvaluationRequest)returns(SearchMultiEvaluationResponse){}
     rpc SubmitMultiEvaluation(SubmitMultiEvaluationRequest)returns(SubmitMultiEvaluationResponse){}
 
     // User
@@ -180,4 +181,18 @@ message FetchUsersByIdsRequest{
 
 message FetchUsersByIdsResponse{
     repeated User data = 1;
+}
+
+// 評価検索リクエスト
+message SearchMultiEvaluationRequest{
+    int32 term_id = 1;
+    int32 user_id = 2;
+    int32 limit = 3;
+    int32 page = 4;
+}
+
+// 評価検索レスポンス
+message SearchMultiEvaluationResponse{
+    int32 total_count = 1;
+    repeated MultiEvaluation data = 2;
 }

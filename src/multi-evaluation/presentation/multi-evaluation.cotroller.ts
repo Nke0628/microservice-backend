@@ -18,6 +18,8 @@ import {
   MultiEvaluationServiceController,
   RegisterReportSettingsRequest,
   RegisterReportSettingsResponse,
+  SearchMultiEvaluationRequest,
+  SearchMultiEvaluationResponse,
   SubmitMultiEvaluationRequest,
   SubmitMultiEvaluationResponse,
 } from 'src/proto/generated/multi_evaluation';
@@ -31,6 +33,8 @@ import { ReportSetting } from '../domain/report-setting/domain/model/report-sett
 import { Observable } from 'rxjs';
 import { Optional } from 'typescript-optional';
 import { SaveReportSettingUseCase } from '../usecase/save-report-setting.usecase';
+import { SearchMultiEvaluationUseCase } from '../usecase/search-multi-evaluation.usecase';
+import { MultiEvaluationSearchCondition } from './search-condition/multi-evaluation-search-condition';
 
 @Controller('')
 export class MultiEvaluationController
@@ -43,8 +47,8 @@ export class MultiEvaluationController
     private readonly reportSettingRepository: ReportSettingRepository,
     private readonly saveReportSettingUseCase: SaveReportSettingUseCase,
     private readonly findManagerNormaApplyByUserIdAndMultiTermIdUseCase: FindManagerNormaApplyByUserIdAndMultiTermIdUseCase,
+    private readonly searchMultiEvaluationUseCase: SearchMultiEvaluationUseCase,
   ) {}
-
   findManagerNormaApplyByUserIdAndTermId(
     request: FindManagerNormaApplyRequest,
   ): Promise<FindManagerNormaApplyResponse> {
@@ -256,6 +260,35 @@ export class MultiEvaluationController
         goodComment: submittedMultiEvaluation.getGoodComment,
         improvementComment: submittedMultiEvaluation.getImprovementComment,
       },
+    };
+  }
+
+  // 評価検索
+  @GrpcMethod('MultiEvaluationService')
+  async searchMultiEvaluation(
+    request: SearchMultiEvaluationRequest,
+  ): Promise<SearchMultiEvaluationResponse> {
+    const searchCondition = new MultiEvaluationSearchCondition(
+      request.termId,
+      request.userId,
+      request.limit,
+      request.page,
+    );
+    const [multiEvaluationList, totalCount] =
+      await this.searchMultiEvaluationUseCase.execute(searchCondition);
+    return {
+      totalCount,
+      data: multiEvaluationList.getList().map((multiEvaluation) => {
+        return {
+          id: multiEvaluation.getId,
+          userId: multiEvaluation.getUserId,
+          targetUserId: multiEvaluation.getTargetUserId,
+          multiTermId: multiEvaluation.getMultiTermId,
+          score: multiEvaluation.getScore,
+          goodComment: multiEvaluation.getGoodComment,
+          improvementComment: multiEvaluation.getImprovementComment,
+        };
+      }),
     };
   }
 }
