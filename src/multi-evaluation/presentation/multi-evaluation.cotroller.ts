@@ -270,7 +270,9 @@ export class MultiEvaluationController
   ): Promise<SearchMultiEvaluationResponse> {
     const searchCondition = new MultiEvaluationSearchCondition(
       request.termId,
-      request.userId,
+      request.userIdList,
+      request.reportSubmitStatusList,
+      request.reportResultStatusList,
       request.limit,
       request.page,
     );

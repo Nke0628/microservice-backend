@@ -4,6 +4,7 @@ import { MultiEvaluation } from '../model/multi-evaluation';
 import { MultiEvaluationList } from '../model/multi-evaluation-list';
 import { MultiEvaluationMapper } from '../mapper/mulit-evaluation.mapper';
 import { Optional } from 'typescript-optional';
+import { MultiEvaluation as MultiEvaluationModel } from '@prisma/client';
 import { MultiEvaluationSearchCondition } from 'src/multi-evaluation/presentation/search-condition/multi-evaluation-search-condition';
 
 @Injectable()
@@ -55,24 +56,51 @@ export class MultiEvaluationRepository {
   async search(
     searchCondition: MultiEvaluationSearchCondition,
   ): Promise<[MultiEvaluationList, number]> {
-    const where = {
-      multi_term_id: searchCondition.getTermId,
-      user_id: searchCondition.getUserId,
-    };
-    const multiEvaluationModel =
-      await this.prismaService.multiEvaluation.findMany({
-        where,
-        take: searchCondition.getLimit,
-        skip: searchCondition.getOffset(),
-      });
-    const multiEvaluationCount = await this.prismaService.multiEvaluation.count(
-      {
-        where,
-      },
-    );
-    return [
-      MultiEvaluationMapper.toDomainList(multiEvaluationModel),
-      multiEvaluationCount,
-    ];
+    const queryParameterList = [];
+
+    // ベースクエリ
+    let sql = 'select MultiEvaluation.* from MultiEvaluation ';
+    sql += 'inner join User ON MultiEvaluation.user_id = User.id ';
+
+    // 対象者
+    sql += 'where User.id in (?) ';
+    queryParameterList.push(searchCondition.getUserId.join(','));
+
+    // 所属
+    if (searchCondition.getName) {
+      sql += 'And User.name like ? ';
+      queryParameterList.push('%' + searchCondition.getName + '%');
+    }
+
+    // 役職
+    if (searchCondition.getName) {
+      sql += 'And User.name like ? ';
+      queryParameterList.push('%' + searchCondition.getName + '%');
+    }
+
+    // レポート提出状況
+    if (searchCondition.isSelectedReportStatusList()) {
+      let existFirstWhereCondition = false;
+      sql += 'And (  ';
+      if (searchCondition.isSelectedUnSubmitted()) {
+        sql += '( User.name is NUll OR MultiEvaluation.score = 1 ) ';
+        existFirstWhereCondition = true;
+      }
+      if (searchCondition.isSelectedAccepted()) {
+        sql += existFirstWhereCondition ? 'OR ' : '';
+        sql += '( User.name is NUll OR MultiEvaluation.score = 1 ) ';
+        existFirstWhereCondition = true;
+      }
+      sql += ' )';
+    }
+
+    // WARNING
+    // $queryRawUnsafeを使用しているので、入力値は必ずパラメータ化して渡してください。
+    // 入力値を直接SQL文中で変数展開する場合SQLインジェクションになります。
+    const multiEvaluationModel = await this.prismaService.$queryRawUnsafe<
+      MultiEvaluationModel[]
+    >(sql, ...queryParameterList);
+
+    return [MultiEvaluationMapper.toDomainList(multiEvaluationModel), 1];
   }
 }

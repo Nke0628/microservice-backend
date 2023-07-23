@@ -24,6 +24,23 @@ export enum PositionLayerType {
   UNRECOGNIZED = -1,
 }
 
+/** レポート提出状況 */
+export enum ReportSubmitStatus {
+  REPORT_SUBMIT_STATUS_UNSPECIFIED = 0,
+  UNSUBMITTED = 1,
+  ACCEPTED = 2,
+  DECLINED = 3,
+  UNRECOGNIZED = -1,
+}
+
+/** レポート認可状況 */
+export enum ReportResultStatus {
+  REPORT_RESULT_UNSPECIFIED = 0,
+  APPROVED = 1,
+  REJECTED = 2,
+  UNRECOGNIZED = -1,
+}
+
 export interface FindManagerNormaApplyRequest {
   userId: number;
   multiTermId: number;
@@ -167,7 +184,9 @@ export interface FetchUsersByIdsResponse {
 /** 評価検索リクエスト */
 export interface SearchMultiEvaluationRequest {
   termId: number;
-  userId: number;
+  userIdList: number[];
+  reportSubmitStatusList: ReportSubmitStatus[];
+  reportResultStatusList: ReportResultStatus[];
   limit: number;
   page: number;
 }

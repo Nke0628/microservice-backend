@@ -17,10 +17,11 @@ async function bootstrap() {
         __dirname,
         'proto/multi_evaluation/v1/multi_evaluation.proto',
       ),
-      // loader: {
-      //   defaults: true,
-      //   objects: true,
-      // },
+      loader: {
+        defaults: true,
+        objects: true,
+        arrays: true,
+      },
     },
   });
   await app.listen();

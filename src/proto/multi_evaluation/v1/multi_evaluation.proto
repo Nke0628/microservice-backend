@@ -183,12 +183,29 @@ message FetchUsersByIdsResponse{
     repeated User data = 1;
 }
 
+// レポート提出状況
+enum ReportSubmitStatus {
+    REPORT_SUBMIT_STATUS_UNSPECIFIED = 0;
+    UNSUBMITTED = 1;
+    ACCEPTED = 2;
+    DECLINED = 3;
+}
+
+// レポート認可状況
+enum ReportResultStatus {
+    REPORT_RESULT_UNSPECIFIED = 0;
+    APPROVED = 1;
+    REJECTED = 2;
+}
+
 // 評価検索リクエスト
 message SearchMultiEvaluationRequest{
     int32 term_id = 1;
-    int32 user_id = 2;
-    int32 limit = 3;
-    int32 page = 4;
+    repeated int32 user_id_list = 2;
+    repeated ReportSubmitStatus reportSubmitStatusList = 3;
+    repeated ReportResultStatus reportResultStatusList = 4;
+    int32 limit = 5;
+    int32 page = 6;
 }
 
 // 評価検索レスポンス
