@@ -22,6 +22,9 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@bufbuild/buf": "^1.29.0",
+    "@bufbuild/protobuf": "^1.7.2",
+    "@bufbuild/protoc-gen-es": "^1.7.2",
     "@grpc/grpc-js": "^1.8.13",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
