@@ -15,7 +15,7 @@ async function bootstrap() {
       package: 'multi_evaluation.v1',
       protoPath: join(
         __dirname,
-        '/proto/multi_evaluation/v1/multi_evaluation.proto',
+        '../proto/multi_evaluation/v1/multi_evaluation.proto',
       ),
       loader: {
         defaults: true,

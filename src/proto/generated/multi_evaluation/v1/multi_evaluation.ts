@@ -55,19 +55,6 @@ export interface FindManagerNormaApplyResponse {
   remandReason: string;
 }
 
-export interface FindMultiEvaluationByIdRequst {
-  id: number;
-}
-
-export interface FindMultiEvaluationByIdResponse {
-  id: number;
-  userId: number;
-  targetUserId: number;
-  score: number;
-  goodComment: string;
-  improvementComment: string;
-}
-
 export interface FetchReportSettingsByTermIdRequest {
   termId: number;
 }
@@ -206,11 +193,10 @@ export interface MultiEvaluationServiceClient {
     request: FetchMultiTermAllRequest,
   ): Observable<FetchMultiTermAllResponse>;
 
-  /** MultiEvaluation */
-
-  findMultiEvaluationById(
-    request: FindMultiEvaluationByIdRequst,
-  ): Observable<FindMultiEvaluationByIdResponse>;
+  /**
+   * MultiEvaluation
+   * rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequst)returns(FindMultiEvaluationByIdResponse){}
+   */
 
   fetchByTermIdAndUserId(
     request: FetchByTermIdAndUserIdRequst,
@@ -259,14 +245,10 @@ export interface MultiEvaluationServiceController {
     | Observable<FetchMultiTermAllResponse>
     | FetchMultiTermAllResponse;
 
-  /** MultiEvaluation */
-
-  findMultiEvaluationById(
-    request: FindMultiEvaluationByIdRequst,
-  ):
-    | Promise<FindMultiEvaluationByIdResponse>
-    | Observable<FindMultiEvaluationByIdResponse>
-    | FindMultiEvaluationByIdResponse;
+  /**
+   * MultiEvaluation
+   * rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequst)returns(FindMultiEvaluationByIdResponse){}
+   */
 
   fetchByTermIdAndUserId(
     request: FetchByTermIdAndUserIdRequst,
@@ -335,7 +317,6 @@ export function MultiEvaluationServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
       'fetchMultiTermAll',
-      'findMultiEvaluationById',
       'fetchByTermIdAndUserId',
       'searchMultiEvaluation',
       'submitMultiEvaluation',

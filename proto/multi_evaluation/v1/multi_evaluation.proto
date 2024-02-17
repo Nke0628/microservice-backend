@@ -7,7 +7,7 @@ service MultiEvaluationService {
     rpc FetchMultiTermAll(FetchMultiTermAllRequest)returns(FetchMultiTermAllResponse){}
 
     // MultiEvaluation
-    rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequst)returns(FindMultiEvaluationByIdResponse){}
+    // rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequst)returns(FindMultiEvaluationByIdResponse){}
     rpc FetchByTermIdAndUserId(FetchByTermIdAndUserIdRequst)returns(FetchByTermIdAndUserIdResponse){}
     rpc SearchMultiEvaluation(SearchMultiEvaluationRequest)returns(SearchMultiEvaluationResponse){}
     rpc SubmitMultiEvaluation(SubmitMultiEvaluationRequest)returns(SubmitMultiEvaluationResponse){}
@@ -46,18 +46,18 @@ message FindManagerNormaApplyResponse{
     string remandReason = 6;
 }
 
-message FindMultiEvaluationByIdRequst{
-    int32 id = 1;
-}
+// message FindMultiEvaluationByIdRequst{
+//     int32 id = 1;
+// }
 
-message FindMultiEvaluationByIdResponse{
-    int32 id = 1;
-    int32 user_id= 2;
-    int32 target_user_id = 3;
-    float score = 4;
-    string good_comment = 5;
-    string improvement_comment = 6;
-}
+// message FindMultiEvaluationByIdResponse{
+//     int32 id = 1;
+//     int32 user_id= 2;
+//     int32 target_user_id = 3;
+//     float score = 4;
+//     string good_comment = 5;
+//     string improvement_comment = 6;
+// }
 
 
 message FetchReportSettingsByTermIdRequest{

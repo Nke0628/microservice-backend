@@ -11,8 +11,6 @@ import {
   FetchUsersByIdsResponse,
   FindManagerNormaApplyRequest,
   FindManagerNormaApplyResponse,
-  FindMultiEvaluationByIdRequst,
-  FindMultiEvaluationByIdResponse,
   FindUserByIdRequest,
   FindUserByIdResponse,
   MultiEvaluationServiceController,
@@ -22,7 +20,7 @@ import {
   SearchMultiEvaluationResponse,
   SubmitMultiEvaluationRequest,
   SubmitMultiEvaluationResponse,
-} from 'src/proto/generated/multi_evaluation';
+} from 'src/proto/generated/multi_evaluation/v1/multi_evaluation';
 import { MultiEvaluation } from '../domain/multi-evaluation/model/multi-evaluation';
 import { MultiEvaluationRepository } from '../domain/multi-evaluation/infrastructure/multi-evaluation.repository';
 import { MultiTermRepository } from '../domain/multi-term/infrastructure/multi-term.respository';
@@ -77,11 +75,11 @@ export class MultiEvaluationController
     };
   }
 
-  findMultiEvaluationById(
-    request: FindMultiEvaluationByIdRequst,
-  ): Promise<FindMultiEvaluationByIdResponse> {
-    throw new Error('Method not implemented.');
-  }
+  // findMultiEvaluationById(
+  //   request: FindMultiEvaluationByIdRequst,
+  // ): Promise<FindMultiEvaluationByIdResponse> {
+  //   throw new Error('Method not implemented.');
+  // }
 
   @GrpcMethod('MultiEvaluationService')
   async fetchReportSettingsByTermId(

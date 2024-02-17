@@ -1,7 +1,3 @@
-import {
-  ReportSubmitStatus,
-  ReportResultStatus,
-} from 'src/proto/generated/multi_evaluation';
 import { ApplyStatus } from '../../norma-apply/value-objet/apply-status';
 
 export class MultiEvaluationSearchCondition {
