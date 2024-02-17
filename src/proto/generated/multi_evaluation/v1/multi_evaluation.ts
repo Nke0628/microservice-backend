@@ -193,10 +193,7 @@ export interface MultiEvaluationServiceClient {
     request: FetchMultiTermAllRequest,
   ): Observable<FetchMultiTermAllResponse>;
 
-  /**
-   * MultiEvaluation
-   * rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequst)returns(FindMultiEvaluationByIdResponse){}
-   */
+  /** MultiEvaluation */
 
   fetchByTermIdAndUserId(
     request: FetchByTermIdAndUserIdRequst,
@@ -245,10 +242,7 @@ export interface MultiEvaluationServiceController {
     | Observable<FetchMultiTermAllResponse>
     | FetchMultiTermAllResponse;
 
-  /**
-   * MultiEvaluation
-   * rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequst)returns(FindMultiEvaluationByIdResponse){}
-   */
+  /** MultiEvaluation */
 
   fetchByTermIdAndUserId(
     request: FetchByTermIdAndUserIdRequst,
