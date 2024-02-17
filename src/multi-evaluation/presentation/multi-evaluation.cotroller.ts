@@ -75,12 +75,6 @@ export class MultiEvaluationController
     };
   }
 
-  // findMultiEvaluationById(
-  //   request: FindMultiEvaluationByIdRequst,
-  // ): Promise<FindMultiEvaluationByIdResponse> {
-  //   throw new Error('Method not implemented.');
-  // }
-
   @GrpcMethod('MultiEvaluationService')
   async fetchReportSettingsByTermId(
     request: FetchReportSettingsByTermIdRequest,
