@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package multi_evaluation.v1;
+
+service MultiEvaluationQueryService {
+    /** 360度評価取得 */
+    rpc FindMultiEvaluationById(FindMultiEvaluationByIdRequest)returns(FindMultiEvaluationByIdResponse){}
+}
+
+message FindMultiEvaluationByIdRequest {
+    /** 360度評価ID */
+    int32 id = 1;
+}
+
+message FindMultiEvaluationByIdResponse {
+    /** 360度評価ID */
+    int32 id = 1;
+
+    /** ユーザID */
+    int32 user_id = 2;
+    
+    /** ユーザID */
+    int32 target_user_id = 3;
+
+     /** 360度評価期間ID */
+    int32 multi_term_id = 4;
+
+     /** 点数 */
+    int32 score = 5;
+
+     /** 良い点 */
+    string good_comment = 6;
+
+     /** 改善点 */
+    string improvement_comment = 7;
+
+     /** 作成日時 */
+    string created_at = 8;
+
+     /** 更新日時 */
+    string updated_at = 9;
+}
