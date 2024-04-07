@@ -2,7 +2,7 @@
 import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
-export const protobufPackage = 'multi_evaluation.v1';
+export const protobufPackage = 'microservice_backend.v1';
 
 export interface FindMultiEvaluationByIdRequest {
   /** 360度評価ID */
@@ -30,7 +30,7 @@ export interface FindMultiEvaluationByIdResponse {
   updatedAt: string;
 }
 
-export const MULTI_EVALUATION_V1_PACKAGE_NAME = 'multi_evaluation.v1';
+export const MICROSERVICE_BACKEND_V1_PACKAGE_NAME = 'microservice_backend.v1';
 
 export interface MultiEvaluationQueryServiceClient {
   /** 360度評価取得 */

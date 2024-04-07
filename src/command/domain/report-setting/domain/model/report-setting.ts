@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { PositionLayerType as PositionLayerTypeProto } from 'src/proto/generated/multi_evaluation/v1/multi_evaluation';
+import { PositionLayerType as PositionLayerTypeProto } from 'src/proto/generated/microservice_backend/v1/multi_evaluation';
 import { PositionLayerType } from '../value-object/position-layer-type';
 import { ReportSettingDetail } from './report-setting-detail';
 

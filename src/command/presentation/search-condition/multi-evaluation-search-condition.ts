@@ -1,7 +1,7 @@
 import {
   ReportResultStatus,
   ReportSubmitStatus,
-} from 'src/proto/generated/multi_evaluation/v1/multi_evaluation';
+} from 'src/proto/generated/microservice_backend/v1/multi_evaluation';
 
 export class MultiEvaluationSearchCondition {
   private termId: number;

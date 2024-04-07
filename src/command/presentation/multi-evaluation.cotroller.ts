@@ -20,7 +20,7 @@ import {
   SearchMultiEvaluationResponse,
   SubmitMultiEvaluationRequest,
   SubmitMultiEvaluationResponse,
-} from 'src/proto/generated/multi_evaluation/v1/multi_evaluation';
+} from 'src/proto/generated/microservice_backend/v1/multi_evaluation';
 import { MultiEvaluation } from '../domain/multi-evaluation/model/multi-evaluation';
 import { MultiEvaluationRepository } from '../domain/multi-evaluation/infrastructure/multi-evaluation.repository';
 import { MultiTermRepository } from '../domain/multi-term/infrastructure/multi-term.respository';
@@ -28,11 +28,12 @@ import { UserRepository } from '../domain/user/infrastructure/user.repository';
 import { ReportSettingRepository } from '../domain/report-setting/domain/infrastructure/report-setting.repository';
 import { FindManagerNormaApplyByUserIdAndMultiTermIdUseCase } from '../usecase/find-manager-norma-apply.usecase';
 import { ReportSetting } from '../domain/report-setting/domain/model/report-setting';
-import { Observable } from 'rxjs';
-import { Optional } from 'typescript-optional';
+
 import { SaveReportSettingUseCase } from '../usecase/save-report-setting.usecase';
 import { SearchMultiEvaluationUseCase } from '../usecase/search-multi-evaluation.usecase';
 import { MultiEvaluationSearchCondition } from './search-condition/multi-evaluation-search-condition';
+import { Observable } from 'rxjs';
+import { Optional } from 'typescript-optional';
 
 @Controller('')
 export class MultiEvaluationController

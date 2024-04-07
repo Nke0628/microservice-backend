@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package multi_evaluation.v1;
+package microservice_backend.v1;
 
 service MultiEvaluationQueryService {
     /** 360度評価取得 */

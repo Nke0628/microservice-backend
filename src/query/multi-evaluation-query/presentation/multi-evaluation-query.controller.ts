@@ -4,7 +4,7 @@ import {
   FindMultiEvaluationByIdRequest,
   FindMultiEvaluationByIdResponse,
   MultiEvaluationQueryServiceController,
-} from 'src/proto/generated/multi_evaluation/v1/multi_evaluation_query';
+} from 'src/proto/generated/microservice_backend/v1/multi_evaluation_query';
 import { MultiEvaluationQuery } from '../query/multi-evaluation-query';
 import { MultiEvaluationQueryMapper } from '../mapper/multi-evaluation-query-mapper';
 

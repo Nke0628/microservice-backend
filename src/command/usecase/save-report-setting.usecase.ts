@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterReportSettingsRequest } from 'src/proto/generated/multi_evaluation/v1/multi_evaluation';
+import { RegisterReportSettingsRequest } from 'src/proto/generated/microservice_backend/v1/multi_evaluation';
 import { Optional } from 'typescript-optional';
 import { ReportSettingRepository } from '../domain/report-setting/domain/infrastructure/report-setting.repository';
 import { ReportSetting } from '../domain/report-setting/domain/model/report-setting';

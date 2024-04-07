@@ -1,5 +1,5 @@
 import { MultiEvaluation } from '@prisma/client';
-import { FindMultiEvaluationByIdResponse } from 'src/proto/generated/multi_evaluation/v1/multi_evaluation_query';
+import { FindMultiEvaluationByIdResponse } from 'src/proto/generated/microservice_backend/v1/multi_evaluation_query';
 
 export class MultiEvaluationQueryMapper {
   public static toProto(

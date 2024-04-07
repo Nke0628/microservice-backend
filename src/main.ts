@@ -8,12 +8,15 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: 'localhost:5000',
-      package: 'multi_evaluation.v1',
+      package: 'microservice_backend.v1',
       protoPath: [
-        join(__dirname, '../proto/multi_evaluation/v1/multi_evaluation.proto'),
         join(
           __dirname,
-          '../proto/multi_evaluation/v1/multi_evaluation_query.proto',
+          '../proto/microservice_backend/v1/multi_evaluation.proto',
+        ),
+        join(
+          __dirname,
+          '../proto/microservice_backend/v1/multi_evaluation_query.proto',
         ),
       ],
       loader: {
