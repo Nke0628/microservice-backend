@@ -5,7 +5,7 @@ import { MultiEvaluationList } from '../model/multi-evaluation-list';
 import { MultiEvaluationMapper } from '../mapper/mulit-evaluation.mapper';
 import { Optional } from 'typescript-optional';
 import { MultiEvaluation as MultiEvaluationModel } from '@prisma/client';
-import { MultiEvaluationSearchCondition } from 'src/command/presentation/search-condition/multi-evaluation-search-condition';
+import { MultiEvaluationSearchCondition } from 'src/module/command/presentation/search-condition/multi-evaluation-search-condition';
 
 @Injectable()
 export class MultiEvaluationRepository {
