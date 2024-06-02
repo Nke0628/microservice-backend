@@ -18,6 +18,7 @@ async function bootstrap() {
           __dirname,
           '../proto/microservice_backend/v1/multi_evaluation_query.proto',
         ),
+        join(__dirname, '../proto/microservice_backend/v1/memo_command.proto'),
       ],
       loader: {
         defaults: true,

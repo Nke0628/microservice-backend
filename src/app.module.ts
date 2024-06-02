@@ -7,6 +7,7 @@ import { AllExceptionFilter } from './common/exception/all-exception-filter';
 import { MultiEvaluationQueryModule } from './module/query/multi-evaluation-query/multi-evaluation-query.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronModule } from './module/cron/cron.module';
+import { MemoCommandModule } from './module/cqrs/memo-command.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CronModule } from './module/cron/cron.module';
     MultiEvaluaionModule,
     MultiEvaluationQueryModule,
     CronModule,
+    MemoCommandModule,
   ],
   providers: [
     AppService,

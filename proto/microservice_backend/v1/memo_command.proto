@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package microservice_backend.v1;
+
+service MemoCommandService {
+    rpc CreateMemo(createMemoRequest)returns(createMemoResponse){}
+}
+
+message createMemoRequest{
+    string id = 1;
+    string content = 2;
+}
+
+message createMemoResponse{
+    string id = 1;
+}
