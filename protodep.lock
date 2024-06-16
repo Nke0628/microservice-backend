@@ -1,0 +1,9 @@
+proto_outdir = "./proto/ext"
+
+[[dependencies]]
+  target = "github.com/Nke0628/microservice-backend"
+  subgroup = ""
+  revision = "ec7811d2b8cf72f834b5c137a70cb8158425f2c5"
+  branch = "master"
+  path = ""
+  protocol = ""

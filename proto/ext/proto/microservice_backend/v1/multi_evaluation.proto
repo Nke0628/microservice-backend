@@ -1,0 +1,200 @@
+syntax = "proto3";
+
+package microservice_backend.v1;
+
+service MultiEvaluationService {
+    // MultiTerm
+    rpc FetchMultiTermAll(FetchMultiTermAllRequest)returns(FetchMultiTermAllResponse){}
+
+    // MultiEvaluation
+    rpc FetchByTermIdAndUserId(FetchByTermIdAndUserIdRequst)returns(FetchByTermIdAndUserIdResponse){}
+    rpc SearchMultiEvaluation(SearchMultiEvaluationRequest)returns(SearchMultiEvaluationResponse){}
+    rpc SubmitMultiEvaluation(SubmitMultiEvaluationRequest)returns(SubmitMultiEvaluationResponse){}
+
+    // User
+    rpc FindUserById(FindUserByIdRequest)returns(FindUserByIdResponse){}
+    rpc FetchUsersByIds(FetchUsersByIdsRequest)returns(FetchUsersByIdsResponse){}
+
+    // NormaApply
+    rpc FindManagerNormaApplyByUserIdAndTermId(FindManagerNormaApplyRequest)returns(FindManagerNormaApplyResponse){}
+
+    // ReportSetting
+    rpc FetchReportSettingsByTermId(FetchReportSettingsByTermIdRequest)returns(FetchReportSettingsByTermIdResponse){}
+    rpc RegisterReportSettings(RegisterReportSettingsRequest)returns(RegisterReportSettingsResponse){}
+}
+
+message FindManagerNormaApplyRequest{
+    int32 user_id = 1;
+    int32 multi_term_id = 2;
+}
+
+enum ApplyStatus {
+    UNAPPLIED = 0;
+    APPLYING = 1;
+    APPROVE = 2;
+    REMAND = 3;
+    EXEMPTION = 4;
+}
+
+message FindManagerNormaApplyResponse{
+    int32 id = 1;
+    int32 multi_term_id = 2;
+    string reason = 3;
+    int32 exemption_count = 4;
+    ApplyStatus apply_status = 5;
+    string remandReason = 6;
+}
+
+message FetchReportSettingsByTermIdRequest{
+    int32 term_id = 1;
+}
+
+message ReportSetting{
+    int32 report_setting_id = 1;
+    int32 save_user_id = 2;
+    string saved_at = 3;
+    repeated ReportSettingDetail reportSettingDetails = 4;
+}
+
+enum PositionLayerType{
+    UNSPECIFIED = 0;
+    SECTION = 1;
+    EGG_ASISTANT = 2;
+    EGG_GENERAL = 3;
+    GENERAL = 4;
+    LEADER = 5;
+    SUB_CHEIF = 6;
+}
+
+message ReportSettingDetail{
+    int32 report_setting_detail_id = 1;
+    string position_layer_name = 2;
+    PositionLayerType position_layer_type = 3;
+    bool input_flg = 4;
+    string theme = 5;
+    int32 chara_num = 6;
+}
+
+message FetchReportSettingsByTermIdResponse{
+    ReportSetting data = 1;
+}
+
+message RegisterReportSettingDetail{
+    PositionLayerType position_layer_type = 1;
+    bool input_flg = 2;
+    string theme = 3;
+    int32 chara_num = 4;
+}
+
+message RegisterReportSettingsRequest {
+    int32 user_id = 1;
+    int32 term_id = 2;
+    repeated RegisterReportSettingDetail reportSettingDetails = 3;
+}
+
+message RegisterReportSettingsResponse{
+    ReportSetting data = 1;
+}
+
+message MultiTerm{
+    int32 id = 1;
+    string business_term_name = 2;
+    string business_term_start_date =3;
+    string business_term_end_date =4;
+    string multi_term_start_date =5;
+    string multi_term_end_date =6;
+    bool is_current_term = 7;
+}
+
+message MultiEvaluation{ 
+    int32 id = 1;
+    int32 user_id = 2;
+    int32 target_user_id = 3;
+    int32 multi_term_id = 4;
+    int32 score = 5;
+    string good_comment = 6;
+    string improvement_comment = 7;
+}
+
+message User {
+    int32 id = 1;
+    string name= 2;
+}
+
+message FetchMultiTermAllRequest{
+    int32 take  = 1;
+    bool order_by = 2;
+}
+
+message FetchMultiTermAllResponse{
+    repeated MultiTerm data = 1;
+}
+
+message FetchByTermIdAndUserIdRequst{
+    int32 term_id  = 1;
+    int32 user_id = 2;
+}
+
+message FetchByTermIdAndUserIdResponse{
+    repeated MultiEvaluation data = 1;
+}
+
+message SubmitMultiEvaluationRequest{
+    int32 user_id = 1;
+    int32 target_user_id = 2;
+    int32 multi_term_id = 3;
+    int32 score = 4;
+    string good_comment = 5;
+    string improvement_comment = 6;
+}
+
+message SubmitMultiEvaluationResponse{  
+    MultiEvaluation data = 1;
+}
+
+message FindUserByIdRequest{
+    int32 user_id = 1;
+}
+
+message FindUserByIdResponse{
+    User data = 1;
+}
+
+message FetchUsersByIdsRequest{
+    repeated int32 user_ids = 1;
+}
+
+message FetchUsersByIdsResponse{
+    repeated User data = 1;
+}
+
+// レポート提出状況
+enum ReportSubmitStatus {
+    REPORT_SUBMIT_STATUS_UNSPECIFIED = 0;
+    UNSUBMITTED = 1;
+    ACCEPTED = 2;
+    DECLINED = 3;
+}
+
+// レポート認可状況
+enum ReportResultStatus {
+    REPORT_RESULT_UNSPECIFIED = 0;
+    APPROVED = 1;
+    REJECTED = 2;
+}
+
+// 評価検索リクエスト
+message SearchMultiEvaluationRequest{
+    int32 term_id = 1;
+    repeated int32 user_id_list = 2;
+    repeated ReportSubmitStatus reportSubmitStatusList = 3;
+    repeated ReportResultStatus reportResultStatusList = 4;
+    int32 limit = 5;
+    int32 page = 6;
+}
+
+// 評価検索レスポンス
+message SearchMultiEvaluationResponse{
+    int32 total_count = 1;
+    repeated MultiEvaluation data = 2;
+}
